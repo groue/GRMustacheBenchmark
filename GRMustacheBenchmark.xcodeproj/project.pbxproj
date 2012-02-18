@@ -1,0 +1,256 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5684D26A14EF02820066E416 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5684D26914EF02820066E416 /* Foundation.framework */; };
+		5684D26D14EF02820066E416 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5684D26C14EF02820066E416 /* main.m */; };
+		5684D2E914EF04C10066E416 /* libGRMustache1-macosx10.6.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5684D2E814EF04C10066E416 /* libGRMustache1-macosx10.6.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5684D26314EF02820066E416 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5684D26514EF02820066E416 /* GRMustacheBenchmark */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GRMustacheBenchmark; sourceTree = BUILT_PRODUCTS_DIR; };
+		5684D26914EF02820066E416 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5684D26C14EF02820066E416 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5684D26F14EF02820066E416 /* GRMustacheBenchmark-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GRMustacheBenchmark-Prefix.pch"; sourceTree = "<group>"; };
+		5684D2E814EF04C10066E416 /* libGRMustache1-macosx10.6.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGRMustache1-macosx10.6.a"; path = "lib/libGRMustache1-macosx10.6.a"; sourceTree = "<group>"; };
+		5684D2EA14EF04C90066E416 /* GRMustache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GRMustache.h; path = include/GRMustache.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5684D26214EF02820066E416 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5684D26A14EF02820066E416 /* Foundation.framework in Frameworks */,
+				5684D2E914EF04C10066E416 /* libGRMustache1-macosx10.6.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5684D25A14EF02800066E416 = {
+			isa = PBXGroup;
+			children = (
+				5684D2EB14EF04D10066E416 /* GRMustache */,
+				5684D26B14EF02820066E416 /* GRMustacheBenchmark */,
+				5684D26814EF02820066E416 /* Frameworks */,
+				5684D26614EF02820066E416 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5684D26614EF02820066E416 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5684D26514EF02820066E416 /* GRMustacheBenchmark */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5684D26814EF02820066E416 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5684D26914EF02820066E416 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5684D26B14EF02820066E416 /* GRMustacheBenchmark */ = {
+			isa = PBXGroup;
+			children = (
+				5684D26C14EF02820066E416 /* main.m */,
+				5684D26E14EF02820066E416 /* Supporting Files */,
+			);
+			path = GRMustacheBenchmark;
+			sourceTree = "<group>";
+		};
+		5684D26E14EF02820066E416 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5684D26F14EF02820066E416 /* GRMustacheBenchmark-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5684D2EB14EF04D10066E416 /* GRMustache */ = {
+			isa = PBXGroup;
+			children = (
+				5684D2EA14EF04C90066E416 /* GRMustache.h */,
+				5684D2E814EF04C10066E416 /* libGRMustache1-macosx10.6.a */,
+			);
+			name = GRMustache;
+			path = Libs/GRMustache;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5684D26414EF02820066E416 /* GRMustacheBenchmark */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5684D27414EF02820066E416 /* Build configuration list for PBXNativeTarget "GRMustacheBenchmark" */;
+			buildPhases = (
+				5684D26114EF02820066E416 /* Sources */,
+				5684D26214EF02820066E416 /* Frameworks */,
+				5684D26314EF02820066E416 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GRMustacheBenchmark;
+			productName = GRMustacheBenchmark;
+			productReference = 5684D26514EF02820066E416 /* GRMustacheBenchmark */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5684D25C14EF02800066E416 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchmark" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5684D25A14EF02800066E416;
+			productRefGroup = 5684D26614EF02820066E416 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5684D26414EF02820066E416 /* GRMustacheBenchmark */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5684D26114EF02820066E416 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5684D26D14EF02820066E416 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5684D27214EF02820066E416 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5684D27314EF02820066E416 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5684D27514EF02820066E416 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GRMustacheBenchmark/GRMustacheBenchmark-Prefix.pch";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libs/GRMustache/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5684D27614EF02820066E416 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GRMustacheBenchmark/GRMustacheBenchmark-Prefix.pch";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libs/GRMustache/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchmark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5684D27214EF02820066E416 /* Debug */,
+				5684D27314EF02820066E416 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5684D27414EF02820066E416 /* Build configuration list for PBXNativeTarget "GRMustacheBenchmark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5684D27514EF02820066E416 /* Debug */,
+				5684D27614EF02820066E416 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5684D25C14EF02800066E416 /* Project object */;
+}

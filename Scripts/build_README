@@ -1,0 +1,94 @@
+#!/usr/bin/env ruby
+
+ROOT=File.join(File.dirname(__FILE__), '..')
+
+verbs = []
+tags = []
+scenarios = []
+average_time_for_tag_for_scenario_for_verb = {}
+
+Dir.glob(File.join(ROOT, 'Product', 'Scenarios', '**', '*')).each do |path|
+  next unless File.dirname(File.dirname(File.dirname(path))) =~ /\/Scenarios$/
+  next if ['.raw', '.stripped'].include?(File.extname(path))
+  
+  tag = File.basename(path)
+  tags |= [tag]
+  
+  verb = File.basename(File.dirname(path))
+  verbs |= [verb]
+  
+  scenario = File.basename(File.dirname(File.dirname(path)))
+  scenarios |= [scenario]
+  
+  average_time_for_tag_for_scenario_for_verb[verb] ||= {}
+  average_time = File.read(path).strip.to_f
+  average_time_for_tag_for_scenario_for_verb[verb][scenario] ||= {}
+  average_time_for_tag_for_scenario_for_verb[verb][scenario][tag] = average_time
+end
+
+tags = tags.sort_by { |tag| tag.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i }
+
+LABEL_FOR_VERB = {
+  'combined' => 'Parsing+Rendering',
+  'parse' => 'Parsing',
+  'render' => 'Rendering',
+}
+
+puts <<-MARKDOWN
+# GRMustache benchmarks
+
+You can here compare the performance of all GRMustache versions since v1.7.0 (the first shipped as a static library).
+
+## Methodology
+
+GRMustache is tested against the scenarios stored in the [Scenarios](GRMustache/blob/master/Scenarios) directory.
+
+- `medium`: a reasonable Mustache template, that comes straight from a real application.
+- `short`: a very very short template.
+
+For each version and scenario, we benchmark three different tasks: parsing, rendering, and combined parsing+rendering.
+
+We run each task many times. The actual number of times a task is run depends on each (scenario/task) pair, but not on GRMustache version. It has no meaning *per se*, because it has been chosen so that we have big enough numbers to display, when tasks are run on the author's computer.
+
+This provides us with a sample: the duration for completing a task, for a scenario, for a GRMustache version.
+
+We compute those samples 10 times, remove the lowest and higher ones, and average the remaining samples. (Precisely, assuming a normal distribution, we get rid of values outside of [average-σ, average+σ]), which leaves at least 6 remaining samples.)
+
+Those average numbers are displayed below.
+
+## Tasks
+
+MARKDOWN
+
+tag_column_width = tags.map(&:length).max+2
+time_precision = 3
+time_width = time_precision+1+3
+time_format = "%%%d.%df" % [time_width, time_precision]
+scenario_column_width = [scenarios.map(&:length).max, time_width].max + 2
+th_line_format = ("\t%%-%ds" % tag_column_width) + (("%%%ds" % scenario_column_width) * scenarios.count)
+td_line_format = ("\t%%-%ds" % tag_column_width) + (("%%%ds" % scenario_column_width) * scenarios.count)
+verbs.each do |verb|
+  puts
+  puts "### #{LABEL_FOR_VERB[verb]} task"
+  puts
+  puts th_line_format % ([""]+scenarios)
+  tags.reverse.each do |tag|
+    time_strings = scenarios.map do |scenario|
+      average_time = begin average_time_for_tag_for_scenario_for_verb[verb][scenario][tag] rescue nil end
+      if average_time
+        time_format % average_time
+      else
+        "n/a"
+      end
+    end
+    puts td_line_format % ([tag] + time_strings)
+  end
+end
+
+puts <<-MARKDOWN
+
+-----
+
+This README.md file has been generated with the `make` command.
+
+MARKDOWN

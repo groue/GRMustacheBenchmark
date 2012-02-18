@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+numbers = []
+$stdin.each do |line|
+  next if line =~ /^\s*#/
+  line = line.strip
+  next if line.empty?
+  numbers << line.to_f
+end
+
+p numbers.inject(&:+) / numbers.count

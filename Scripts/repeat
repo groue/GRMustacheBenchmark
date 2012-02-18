@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+if ARGV.length < 2
+  $stderr.puts "Usage: repeat <COUNT> <COMMAND> <ARGS...>"
+  exit(-1)
+end
+
+count = ARGV[0].to_i
+command = ARGV[1]
+args = ARGV[2..-1]
+
+def shell_escape(str)
+  str.gsub('"', "\\\"")
+end
+
+command = %<#{command} #{args.map { |arg| '"'+shell_escape(arg)+'"' }.join(' ')}>
+count.times do
+  puts `#{command}`
+end
