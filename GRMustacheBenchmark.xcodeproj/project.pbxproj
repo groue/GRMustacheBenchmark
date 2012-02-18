@@ -127,7 +127,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = 5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchmark" */;
+			buildConfigurationList = 5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchMark" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -212,6 +212,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libs/GRMustache/lib\"",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -225,6 +226,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libs/GRMustache/lib\"",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -232,7 +234,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchmark" */ = {
+		5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchMark" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5684D27214EF02820066E416 /* Debug */,

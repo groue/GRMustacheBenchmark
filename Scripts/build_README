@@ -37,7 +37,7 @@ LABEL_FOR_VERB = {
 puts <<-MARKDOWN
 # GRMustache benchmarks
 
-You can here compare the performance of all GRMustache versions since v1.7.0 (the first shipped as a static library).
+You can here compare the performance of all GRMustache versions since v1.7.1 (the first shipped as a static library).
 
 ## Methodology
 
@@ -61,7 +61,7 @@ Those average numbers are displayed below.
 MARKDOWN
 
 tag_column_width = tags.map(&:length).max+2
-time_precision = 3
+time_precision = 2
 time_width = time_precision+1+3
 time_format = "%%%d.%df" % [time_width, time_precision]
 scenario_column_width = [scenarios.map(&:length).max, time_width].max + 2
