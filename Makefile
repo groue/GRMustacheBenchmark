@@ -62,9 +62,9 @@ Product/lib/GRMustache-LOCAL:
 	mkdir -p Libs
 	[ -e Product/lib/GRMustache-LOCAL ] || ln -s ../../../GRMustache Product/lib/GRMustache-LOCAL
 Product/lib/GRMustache-LOCAL/include/GRMustache.h: Product/lib/GRMustache-LOCAL
-	cd Product/lib/GRMustache-LOCAL; make includes
+	cd Product/lib/GRMustache-LOCAL; make include/GRMustache.h
 Product/lib/GRMustache-LOCAL/lib/libGRMustache1-macosx10.6.a: Product/lib/GRMustache-LOCAL
-	cd Product/lib/GRMustache-LOCAL; make lib/libGRMustache1-macosx10.6.a; make include/GRMustache.h
+	cd Product/lib/GRMustache-LOCAL; make lib/libGRMustache1-macosx10.6.a
 clean_version_lib_LOCAL: 
 	mkdir -p Libs
 	[ -e Product/lib/GRMustache-LOCAL ] || ln -s ../../../GRMustache Product/lib/GRMustache-LOCAL
