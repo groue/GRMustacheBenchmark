@@ -1,11 +1,29 @@
 #!/usr/bin/env ruby
 
 ROOT=File.join(File.dirname(__FILE__), '..')
+LABEL_FOR_VERB = {
+  'combined' => 'Parsing+Rendering',
+  'parse' => 'Parsing',
+  'render' => 'Rendering',
+}
+FACTOR_FOR_VERB_FOR_SCENARIO = {
+  'short' => {
+    'parse' => 250000,
+    'render' => 1250000,
+    'combined' => 250000,
+  },
+  'medium' => {
+    'parse' => 30000,
+    'render' => 5000,
+    'combined' => 5000,
+  }
+}
 
 verbs = []
 tags = []
 scenarios = []
 average_time_for_tag_for_scenario_for_verb = {}
+min_average_time = nil
 
 Dir.glob(File.join(ROOT, 'Product', 'Scenarios', '**', '*')).each do |path|
   next unless File.dirname(File.dirname(File.dirname(path))) =~ /\/Scenarios$/
@@ -22,39 +40,28 @@ Dir.glob(File.join(ROOT, 'Product', 'Scenarios', '**', '*')).each do |path|
   
   average_time_for_tag_for_scenario_for_verb[verb] ||= {}
   average_time = File.read(path).strip.to_f
+  average_time /= FACTOR_FOR_VERB_FOR_SCENARIO[scenario][verb]
+  min_average_time = average_time if min_average_time.nil? || min_average_time > average_time
   average_time_for_tag_for_scenario_for_verb[verb][scenario] ||= {}
   average_time_for_tag_for_scenario_for_verb[verb][scenario][tag] = average_time
 end
 
 tags = tags.sort_by { |tag| tag.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i }
 
-LABEL_FOR_VERB = {
-  'combined' => 'Parsing+Rendering',
-  'parse' => 'Parsing',
-  'render' => 'Rendering',
-}
 
 puts <<-MARKDOWN
 # GRMustache benchmarks
 
 You can here compare the performance of all GRMustache versions since v1.7.1 (the first shipped as a static library).
 
-## Methodology
-
-GRMustache is tested against the scenarios stored in the [Scenarios](GRMustache/blob/master/Scenarios) directory.
+GRMustache has been tested against the scenarios stored in the [Scenarios](GRMustache/blob/master/Scenarios) directory.
 
 - `medium`: a reasonable Mustache template, that comes straight from a real application.
 - `short`: a very very short template.
 
 For each version and scenario, we benchmark three different tasks: parsing, rendering, and combined parsing+rendering.
 
-We run each task many times. The actual number of times a task is run depends on each (scenario/task) pair, but not on GRMustache version. It has no meaning *per se*, because it has been chosen so that we have big enough numbers to display, when tasks are run on the author's computer.
-
-This provides us with a sample: the duration for completing a task, for a scenario, for a GRMustache version.
-
-We compute those samples 10 times, remove the lowest and higher ones, and average the remaining samples. (Precisely, assuming a normal distribution, we get rid of values outside of [average-σ, average+σ]), which leaves at least 6 remaining samples.)
-
-Those average numbers are displayed below.
+Numbers below are computed from normal duration samples of those tasks.
 
 ## Tasks
 
@@ -74,7 +81,7 @@ verbs.each do |verb|
   puts th_line_format % ([""]+scenarios)
   tags.reverse.each do |tag|
     time_strings = scenarios.map do |scenario|
-      average_time = begin average_time_for_tag_for_scenario_for_verb[verb][scenario][tag] rescue nil end
+      average_time = begin average_time_for_tag_for_scenario_for_verb[verb][scenario][tag] / min_average_time rescue nil end
       if average_time
         time_format % average_time
       else

@@ -1,6 +1,5 @@
 Libs
-Product/bin
-Product/build
+Product
 
 # xcode
 build/*
