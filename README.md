@@ -1,6 +1,6 @@
 # GRMustache benchmarks
 
-You can here compare the performance of all GRMustache versions since v1.7.1 (the first shipped as a static library).
+You can here compare the performance of all [GRMustache](https://github.com/groue/GRMustache) versions since v1.7.1 (the first shipped as a static library).
 
 GRMustache has been tested against the scenarios stored in the [Scenarios](GRMustacheBenchmark/tree/master/Scenarios) directory.
 
