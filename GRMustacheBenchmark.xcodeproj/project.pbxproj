@@ -96,7 +96,7 @@
 				5684D2E814EF04C10066E416 /* libGRMustache1-macosx10.6.a */,
 			);
 			name = GRMustache;
-			path = Libs/GRMustache;
+			path = Product/lib/GRMustache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,7 +210,7 @@
 				GCC_PREFIX_HEADER = "GRMustacheBenchmark/GRMustacheBenchmark-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Libs/GRMustache/lib\"",
+					"\"$(SRCROOT)/Product/lib/GRMustache/lib\"",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -224,7 +224,7 @@
 				GCC_PREFIX_HEADER = "GRMustacheBenchmark/GRMustacheBenchmark-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Libs/GRMustache/lib\"",
+					"\"$(SRCROOT)/Product/lib/GRMustache/lib\"",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";

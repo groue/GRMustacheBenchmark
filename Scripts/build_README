@@ -1,52 +1,41 @@
 #!/usr/bin/env ruby
 
 ROOT=File.join(File.dirname(__FILE__), '..')
-LABEL_FOR_VERB = {
+LABEL_FOR_TASK = {
   'combined' => 'Parsing+Rendering',
   'parse' => 'Parsing',
   'render' => 'Rendering',
 }
-FACTOR_FOR_VERB_FOR_SCENARIO = {
-  'short' => {
-    'parse' => 250000,
-    'render' => 1250000,
-    'combined' => 250000,
-  },
-  'medium' => {
-    'parse' => 30000,
-    'render' => 5000,
-    'combined' => 5000,
-  }
-}
 
-verbs = []
-tags = []
+tasks = []
+versions = []
 scenarios = []
-average_time_for_tag_for_scenario_for_verb = {}
-min_average_time = nil
+sample_for_version_for_scenario_for_task = {}
+min_sample = nil
 
-Dir.glob(File.join(ROOT, 'Product', 'Scenarios', '**', '*')).each do |path|
-  next unless File.dirname(File.dirname(File.dirname(path))) =~ /\/Scenarios$/
-  next if ['.raw', '.stripped'].include?(File.extname(path))
+Dir.glob(File.join(ROOT, 'Product', 'samples', '**', '*')).each do |path|
+  next unless File.extname(path) == '.sample'
   
-  tag = File.basename(path)
-  tags |= [tag]
+  version = File.basename(path)
+  versions |= [version]
   
-  verb = File.basename(File.dirname(path))
-  verbs |= [verb]
+  task = File.basename(File.dirname(path))
+  tasks |= [task]
   
   scenario = File.basename(File.dirname(File.dirname(path)))
   scenarios |= [scenario]
   
-  average_time_for_tag_for_scenario_for_verb[verb] ||= {}
-  average_time = File.read(path).strip.to_f
-  average_time /= FACTOR_FOR_VERB_FOR_SCENARIO[scenario][verb]
-  min_average_time = average_time if min_average_time.nil? || min_average_time > average_time
-  average_time_for_tag_for_scenario_for_verb[verb][scenario] ||= {}
-  average_time_for_tag_for_scenario_for_verb[verb][scenario][tag] = average_time
+  sample_count = File.read(path.gsub(/\.sample$/, '.sample_count')).strip.to_f
+  
+  sample_for_version_for_scenario_for_task[task] ||= {}
+  sample = File.read(path).strip.to_f
+  sample /= sample_count
+  min_sample = sample if min_sample.nil? || min_sample > sample
+  sample_for_version_for_scenario_for_task[task][scenario] ||= {}
+  sample_for_version_for_scenario_for_task[task][scenario][version] = sample
 end
 
-tags = tags.sort_by { |tag| tag.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i }
+versions = versions.sort_by { |version| version.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i }
 
 
 puts <<-MARKDOWN
@@ -67,28 +56,27 @@ Numbers below are computed from normal duration samples of those tasks.
 
 MARKDOWN
 
-tag_column_width = tags.map(&:length).max+2
 time_precision = 2
 time_width = time_precision+1+3
-time_format = "%%%d.%df" % [time_width, time_precision]
-scenario_column_width = [scenarios.map(&:length).max, time_width].max + 2
-th_line_format = ("\t%%-%ds" % tag_column_width) + (("%%%ds" % scenario_column_width) * scenarios.count)
-td_line_format = ("\t%%-%ds" % tag_column_width) + (("%%%ds" % scenario_column_width) * scenarios.count)
-verbs.each do |verb|
+sample_column_width = [scenarios.map(&:length).max, time_width].max + 2
+version_column_width = versions.map(&:length).max+2
+sample_format = "%%%d.%df" % [time_width, time_precision]
+line_format = ("\t%%-%ds" % version_column_width) + (("%%%ds" % sample_column_width) * scenarios.count)
+tasks.each do |task|
   puts
-  puts "### #{LABEL_FOR_VERB[verb]} task"
+  puts "### #{LABEL_FOR_TASK[task]} task"
   puts
-  puts th_line_format % ([""]+scenarios)
-  tags.reverse.each do |tag|
+  puts line_format % ([""]+scenarios)
+  versions.reverse.each do |version|
     time_strings = scenarios.map do |scenario|
-      average_time = begin average_time_for_tag_for_scenario_for_verb[verb][scenario][tag] / min_average_time rescue nil end
-      if average_time
-        time_format % average_time
+      sample = begin sample_for_version_for_scenario_for_task[task][scenario][version] / min_sample rescue nil end
+      if sample
+        sample_format % sample
       else
         "n/a"
       end
     end
-    puts td_line_format % ([tag] + time_strings)
+    puts line_format % ([version] + time_strings)
   end
 end
 
