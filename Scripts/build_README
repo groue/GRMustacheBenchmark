@@ -16,7 +16,7 @@ min_sample = nil
 Dir.glob(File.join(ROOT, 'Product', 'samples', '**', '*')).each do |path|
   next unless File.extname(path) == '.sample'
   
-  version = File.basename(path)
+  version = File.basename(path).gsub(/\.sample$/, '')
   versions |= [version]
   
   task = File.basename(File.dirname(path))
