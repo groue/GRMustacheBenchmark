@@ -2,7 +2,7 @@
 
 You can here compare the performance of all GRMustache versions since v1.7.1 (the first shipped as a static library).
 
-GRMustache has been tested against the scenarios stored in the [Scenarios](GRMustache/blob/master/Scenarios) directory.
+GRMustache has been tested against the scenarios stored in the [Scenarios](GRMustacheBenchmark/tree/master/Scenarios) directory.
 
 - `medium`: a reasonable Mustache template, that comes straight from a real application.
 - `short`: a very very short template.
