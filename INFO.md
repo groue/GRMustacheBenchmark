@@ -3,6 +3,7 @@
 Edit Makefile, add a GRMustache git tag to the VERSIONS variable, and run:
 
     make clean_version_samples_LOCAL    # make sure local samples do not enter the README.md
+    make clean_samples                  # if you want to recompute all samples
     make
 
 ### Rerun a sample:

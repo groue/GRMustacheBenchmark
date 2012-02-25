@@ -1,4 +1,4 @@
-VERSIONS = v1.10.2 v1.10.1 v1.10.0 v1.9.0 v1.8.6 v1.8.5 v1.8.4 v1.8.3 v1.8.2 v1.8.1 v1.8.0 v1.7.4 v1.7.3 v1.7.2 v1.7.1
+VERSIONS = v1.11.1 v1.11.0 v1.10.3 v1.10.2 v1.10.1 v1.10.0 v1.9.0 v1.8.6 v1.8.5 v1.8.4 v1.8.3 v1.8.2 v1.8.1 v1.8.0 v1.7.4 v1.7.3 v1.7.2 v1.7.1
 SCENARIOS = short medium
 TASKS = parse render combined
 SAMPLE_COUNT_short_parse = 50000

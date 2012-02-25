@@ -56,7 +56,7 @@ Numbers below are computed from normal duration samples of those tasks.
 
 MARKDOWN
 
-time_precision = 2
+time_precision = 1
 time_width = time_precision+1+3
 sample_column_width = [scenarios.map(&:length).max, time_width].max + 2
 version_column_width = versions.map(&:length).max+2
