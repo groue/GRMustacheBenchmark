@@ -82,8 +82,6 @@ GRMustache has been tested against the scenarios stored in the [Scenarios](GRMus
 
 For each version and scenario, we benchmark three different tasks: parsing, rendering, and combined parsing+rendering.
 
-## Tasks
-
 MARKDOWN
 
 time_precision = 1
@@ -94,7 +92,7 @@ sample_format = "%%%d.%de" % [time_width, time_precision]
 line_format = ("\t%%-%ds" % version_column_width) + (("%%%ds" % sample_column_width) * scenarios.count)
 tasks.each do |task|
   puts
-  puts "### #{LABEL_FOR_TASK[task]} task"
+  puts "## #{LABEL_FOR_TASK[task]} task"
   puts
   puts line_format % ([""]+scenarios)
   versions.reverse.each do |version|

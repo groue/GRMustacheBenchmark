@@ -9,10 +9,8 @@ GRMustache has been tested against the scenarios stored in the [Scenarios](GRMus
 
 For each version and scenario, we benchmark three different tasks: parsing, rendering, and combined parsing+rendering.
 
-## Tasks
 
-
-### Parsing+Rendering task
+## Parsing+Rendering task
 
 	            medium    short
 	v1.11.2    5.8e+02  1.2e+01
@@ -35,7 +33,7 @@ For each version and scenario, we benchmark three different tasks: parsing, rend
 	v1.7.2     6.8e+02  1.3e+01
 	v1.7.1     6.8e+02  1.3e+01
 
-### Parsing task
+## Parsing task
 
 	            medium    short
 	v1.11.2    7.3e+01  7.6e+00
@@ -58,7 +56,7 @@ For each version and scenario, we benchmark three different tasks: parsing, rend
 	v1.7.2     5.8e+01  6.4e+00
 	v1.7.1     5.7e+01  6.1e+00
 
-### Rendering task
+## Rendering task
 
 	            medium    short
 	v1.11.2    4.7e+02  1.0e+00
