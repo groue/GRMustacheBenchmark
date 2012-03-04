@@ -7,34 +7,28 @@
 //
 
 #import "GRMustache.h"
-#include <sys/time.h>
-#include <sys/resource.h>
+#include <time.h>
 
-static double get_time() {
-    struct timeval t;
-    struct timezone tzp;
-    gettimeofday(&t, &tzp);
-    return t.tv_sec + t.tv_usec*1e-6;
-}
-
-static double time_elapsed(void(^block)(void))
+static double cpu_time_elapsed(void(^block)(void))
 {
-    double start_time = get_time();
+    clock_t start, end;
+    start = clock();
     block();
-    return get_time()-start_time;
+    end = clock();
+    return ((double)(end-start))/CLOCKS_PER_SEC;
 }
 
 int main (int argc, char * const argv[])
 {
     @autoreleasepool {
-        char *countCString = 0;
+        char *sampleCountCString = 0;
         char *verbCString = 0;
         char *scenarioPathCString = 0;
         
         while (getopt(argc, argv, "") != -1) ;
         while (optind < argc) {
-            if (!countCString) {
-                countCString = argv[optind++];
+            if (!sampleCountCString) {
+                sampleCountCString = argv[optind++];
             } else if (!verbCString) {
                 verbCString = argv[optind++];
             } else {
@@ -43,7 +37,7 @@ int main (int argc, char * const argv[])
             }
         }
         
-        NSUInteger count = 0; sscanf(countCString, "%d", &count);
+        NSUInteger sampleCount = 0; sscanf(sampleCountCString, "%d", &sampleCount);
         NSString *verb = [NSString stringWithCString:verbCString encoding:NSUTF8StringEncoding];
         NSString *scenarioPath = [NSString stringWithCString:scenarioPathCString encoding:NSUTF8StringEncoding];
         
@@ -52,25 +46,33 @@ int main (int argc, char * const argv[])
         if ([verb isEqualToString:@"parse"]) {
             // outputs parsing time
             NSString *templateString = [NSString stringWithContentsOfFile:scenarioTemplatePath encoding:NSUTF8StringEncoding error:NULL];
-            double time = time_elapsed(^{
-                for (NSUInteger i=0; i<count; i++) {
+            double time = cpu_time_elapsed(^{
+                for (NSUInteger i=0; i<sampleCount; i++) {
+#if GRMUSTACHE_MINOR_VERSION < 11
                     [GRMustacheTemplate parseString:templateString error:NULL];
+#else
+                    [GRMustacheTemplate templateFromString:templateString error:NULL];
+#endif
                 }
             });
-            printf("%f\n", time);
+            printf("%g\n", time/sampleCount);
             
         } else if ([verb isEqualToString:@"render"]) {
             // outputs rendering time
             
+#if GRMUSTACHE_MINOR_VERSION < 11
             GRMustacheTemplate *template = [GRMustacheTemplate parseContentsOfFile:scenarioTemplatePath error:NULL];
+#else
+            GRMustacheTemplate *template = [GRMustacheTemplate templateFromContentsOfFile:scenarioTemplatePath error:NULL];
+#endif
             NSString *dictionaryTemplatePath = [scenarioPath stringByAppendingPathExtension:@"plist"];
             NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:dictionaryTemplatePath];
-            double time = time_elapsed(^{
-                for (NSUInteger i=0; i<count; i++) {
+            double time = cpu_time_elapsed(^{
+                for (NSUInteger i=0; i<sampleCount; i++) {
                     [template renderObject:dictionary];
                 }
             });
-            printf("%f\n", time);
+            printf("%g\n", time/sampleCount);
             
         } else if ([verb isEqualToString:@"combined"]) {
             // outputs parsing + rendering time
@@ -78,17 +80,21 @@ int main (int argc, char * const argv[])
             NSString *templateString = [NSString stringWithContentsOfFile:scenarioTemplatePath encoding:NSUTF8StringEncoding error:NULL];
             NSString *dictionaryTemplatePath = [scenarioPath stringByAppendingPathExtension:@"plist"];
             NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:dictionaryTemplatePath];
-            double time = time_elapsed(^{
-                for (NSUInteger i=0; i<count; i++) {
+            double time = cpu_time_elapsed(^{
+                for (NSUInteger i=0; i<sampleCount; i++) {
                     [GRMustacheTemplate renderObject:dictionary fromString:templateString error:NULL];
                 }
             });
-            printf("%f\n", time);
+            printf("%g\n", time/sampleCount);
             
         } else if ([verb isEqualToString:@"check"]) {
             // outputs template rendering
             
+#if GRMUSTACHE_MINOR_VERSION < 11
             GRMustacheTemplate *template = [GRMustacheTemplate parseContentsOfFile:scenarioTemplatePath error:NULL];
+#else
+            GRMustacheTemplate *template = [GRMustacheTemplate templateFromContentsOfFile:scenarioTemplatePath error:NULL];
+#endif
             NSString *dictionaryTemplatePath = [scenarioPath stringByAppendingPathExtension:@"plist"];
             NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:dictionaryTemplatePath];
             printf("%s\n", [[template renderObject:dictionary] cStringUsingEncoding:NSUTF8StringEncoding]);
