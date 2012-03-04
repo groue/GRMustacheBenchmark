@@ -9,8 +9,6 @@ GRMustache has been tested against the scenarios stored in the [Scenarios](GRMus
 
 For each version and scenario, we benchmark three different tasks: parsing, rendering, and combined parsing+rendering.
 
-Numbers below are computed from normal duration samples of those tasks.
-
 ## Tasks
 
 
