@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		5684D26A14EF02820066E416 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5684D26914EF02820066E416 /* Foundation.framework */; };
 		5684D26D14EF02820066E416 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5684D26C14EF02820066E416 /* main.m */; };
-		5684D2E914EF04C10066E416 /* libGRMustache1-macosx10.6.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5684D2E814EF04C10066E416 /* libGRMustache1-macosx10.6.a */; };
+		5684D2E914EF04C10066E416 /* libGRMustache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5684D2E814EF04C10066E416 /* libGRMustache.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,7 +29,7 @@
 		5684D26914EF02820066E416 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5684D26C14EF02820066E416 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5684D26F14EF02820066E416 /* GRMustacheBenchmark-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GRMustacheBenchmark-Prefix.pch"; sourceTree = "<group>"; };
-		5684D2E814EF04C10066E416 /* libGRMustache1-macosx10.6.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGRMustache1-macosx10.6.a"; path = "lib/libGRMustache1-macosx10.6.a"; sourceTree = "<group>"; };
+		5684D2E814EF04C10066E416 /* libGRMustache.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGRMustache.a; path = "../GRMustache-v1.13.0/lib/libGRMustache.a"; sourceTree = "<group>"; };
 		5684D2EA14EF04C90066E416 /* GRMustache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GRMustache.h; path = include/GRMustache.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -39,7 +39,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5684D26A14EF02820066E416 /* Foundation.framework in Frameworks */,
-				5684D2E914EF04C10066E416 /* libGRMustache1-macosx10.6.a in Frameworks */,
+				5684D2E914EF04C10066E416 /* libGRMustache.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				5684D2EA14EF04C90066E416 /* GRMustache.h */,
-				5684D2E814EF04C10066E416 /* libGRMustache1-macosx10.6.a */,
+				5684D2E814EF04C10066E416 /* libGRMustache.a */,
 			);
 			name = GRMustache;
 			path = Product/lib/GRMustache;
@@ -127,7 +127,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = 5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchMark" */;
+			buildConfigurationList = 5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchmark" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -234,7 +234,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchMark" */ = {
+		5684D25F14EF02800066E416 /* Build configuration list for PBXProject "GRMustacheBenchmark" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5684D27214EF02820066E416 /* Debug */,

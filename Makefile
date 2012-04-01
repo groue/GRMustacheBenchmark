@@ -17,7 +17,7 @@ README.md: $(foreach version,$(VERSIONS),version_samples_$(version))
 define VERSION_SAMPLES_template
 $(foreach scenario,$(SCENARIOS),$(eval $(call VERSION_SCENARIO_template,$(1),$(scenario))))
 version_samples_$(1): $(foreach task,$(TASKS),$(foreach scenario,$(SCENARIOS),Product/samples/$(scenario)/$(task)/$(1).samples))
-Product/build/$(1)/Release/GRMustacheBenchmark: Product/lib/GRMustache-$(1)/lib/libGRMustache1-macosx10.6.a Product/lib/GRMustache-$(1)/include/GRMustache.h
+Product/build/$(1)/Release/GRMustacheBenchmark: Product/lib/GRMustache-$(1)/lib/libGRMustache.a Product/lib/GRMustache-$(1)/include/GRMustache.h
 	rm -f Product/lib/GRMustache
 	ln -s GRMustache-$(1) Product/lib/GRMustache
 	xcodebuild -project GRMustacheBenchmark.xcodeproj -configuration Release build SYMROOT=Product/build/$(1)
@@ -34,7 +34,10 @@ Product/lib/GRMustache-$(1):
 	git clone https://github.com/groue/GRMustache.git Product/lib/GRMustache-$(1)
 	cd Product/lib/GRMustache-$(1) && git checkout $(1)
 Product/lib/GRMustache-$(1)/include/GRMustache.h: Product/lib/GRMustache-$(1)
-Product/lib/GRMustache-$(1)/lib/libGRMustache1-macosx10.6.a: Product/lib/GRMustache-$(1)
+Product/lib/GRMustache-$(1)/lib/libGRMustache.a: Product/lib/GRMustache-$(1)
+	rm -f Product/lib/GRMustache-$(1)/lib/libGRMustache.a
+	[ -f Product/lib/GRMustache-$(1)/lib/libGRMustache1-macosx10.6.a ] && ln -s libGRMustache1-macosx10.6.a Product/lib/GRMustache-$(1)/lib/libGRMustache.a || true
+	[ -f Product/lib/GRMustache-$(1)/lib/libGRMustache2-MacOS.a ] && ln -s libGRMustache2-MacOS.a Product/lib/GRMustache-$(1)/lib/libGRMustache.a || true
 clean_version_lib_$(1):
 	rm -rf Product/lib/GRMustache-$(1)
 endef
@@ -55,10 +58,12 @@ $(eval $(call VERSION_SAMPLES_template,LOCAL))
 Product/lib/GRMustache-LOCAL:
 	mkdir -p Product/lib
 	[ -e Product/lib/GRMustache-LOCAL ] || ln -s ../../../GRMustache Product/lib/GRMustache-LOCAL
-Product/lib/GRMustache-LOCAL/include/GRMustache.h: Product/lib/GRMustache-LOCAL
-	cd Product/lib/GRMustache-LOCAL; make include/GRMustache.h
-Product/lib/GRMustache-LOCAL/lib/libGRMustache1-macosx10.6.a: Product/lib/GRMustache-LOCAL
-	cd Product/lib/GRMustache-LOCAL; make lib/libGRMustache1-macosx10.6.a
+Product/lib/GRMustache-LOCAL/include/GRMustache.h: Product/lib/GRMustache-LOCAL/lib/libGRMustache.a
+Product/lib/GRMustache-LOCAL/lib/libGRMustache.a: Product/lib/GRMustache-LOCAL
+	cd Product/lib/GRMustache-LOCAL; make
+	rm -f Product/lib/GRMustache-LOCAL/lib/libGRMustache.a
+	[ -f Product/lib/GRMustache-LOCAL/lib/libGRMustache1-macosx10.6.a ] && ln -s libGRMustache1-macosx10.6.a Product/lib/GRMustache-LOCAL/lib/libGRMustache.a || true
+	[ -f Product/lib/GRMustache-LOCAL/lib/libGRMustache2-MacOS.a ] && ln -s libGRMustache2-MacOS.a Product/lib/GRMustache-LOCAL/lib/libGRMustache.a || true
 clean_version_lib_LOCAL: 
 	mkdir -p Product/lib
 	[ -e Product/lib/GRMustache-LOCAL ] || ln -s ../../../GRMustache Product/lib/GRMustache-LOCAL

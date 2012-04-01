@@ -48,7 +48,7 @@ int main (int argc, char * const argv[])
             NSString *templateString = [NSString stringWithContentsOfFile:scenarioTemplatePath encoding:NSUTF8StringEncoding error:NULL];
             double time = cpu_time_elapsed(^{
                 for (NSUInteger i=0; i<sampleCount; i++) {
-#if GRMUSTACHE_MINOR_VERSION < 11
+#if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
                     [GRMustacheTemplate parseString:templateString error:NULL];
 #else
                     [GRMustacheTemplate templateFromString:templateString error:NULL];
@@ -60,7 +60,7 @@ int main (int argc, char * const argv[])
         } else if ([verb isEqualToString:@"render"]) {
             // outputs rendering time
             
-#if GRMUSTACHE_MINOR_VERSION < 11
+#if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
             GRMustacheTemplate *template = [GRMustacheTemplate parseContentsOfFile:scenarioTemplatePath error:NULL];
 #else
             GRMustacheTemplate *template = [GRMustacheTemplate templateFromContentsOfFile:scenarioTemplatePath error:NULL];
@@ -90,7 +90,7 @@ int main (int argc, char * const argv[])
         } else if ([verb isEqualToString:@"check"]) {
             // outputs template rendering
             
-#if GRMUSTACHE_MINOR_VERSION < 11
+#if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
             GRMustacheTemplate *template = [GRMustacheTemplate parseContentsOfFile:scenarioTemplatePath error:NULL];
 #else
             GRMustacheTemplate *template = [GRMustacheTemplate templateFromContentsOfFile:scenarioTemplatePath error:NULL];
