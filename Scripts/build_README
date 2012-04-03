@@ -21,7 +21,7 @@ benchmark.scenarios.each do |scenario|
     File.open(gnuplot_data_path, 'w') do |f|
       benchmark.versions.each_with_index do |version, index|
         sample = begin benchmark.sample_for_version_scenario_task(version, scenario, task) / benchmark.min_sample rescue '' end
-        f.puts "#{version.gsub(/^[^\d]*/,'')}\t#{sample}"
+        f.puts "#{version.gsub(/^[^\d]*([\d])/,'\1')}\t#{sample}"
       end
     end
     plot_path = File.join(plots_path, "#{scenario}-#{task}.png")
