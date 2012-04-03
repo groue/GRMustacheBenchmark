@@ -1,74 +1,63 @@
 #!/usr/bin/env ruby
+require 'fileutils'
+require File.join(File.dirname(__FILE__), 'GRMustacheBenchmark')
 
-def dichotomy(min,max,&block)
-  vmin = block[min]
-  vmax = block[max]
-  loop do
-    return min if (max - min) <= Float::EPSILON
-    center = (min + max)/2.0
-    vcenter = block[center]
-    return center if vcenter.abs <= Float::EPSILON
-    if vcenter*vmin > 0
-      min = center
-      vmin = vcenter
-    else
-      max = center
-      vmax = vcenter
-    end
-  end
-end
-
-def inv_erf(x)
-  dichotomy(0,6) { |y| Math.erf(y) - x }
-end
-
-# numbers_in_confidence_interval([gaussian distributed numbers of average 0 and standard deviation 1], Math.erf(1/Math.sqrt(2))) => numbers between -1 and 1
-def numbers_in_confidence_interval(numbers, confidence_interval)
-  average = numbers.inject(&:+) / numbers.count
-  standard_deviation = Math.sqrt(numbers.map { |number| (number-average)*(number-average) }.inject(&:+) / numbers.count)
-  threshold = inv_erf(confidence_interval) * Math.sqrt(2) * standard_deviation
-  numbers.find_all { |number| (number-average).abs <= threshold }
-end
-
-
-ROOT=File.join(File.dirname(__FILE__), '..')
+ROOT = File.join(File.dirname(__FILE__), '..')
+plots_path = File.join(ROOT, 'Plots')
 LABEL_FOR_TASK = {
   'combined' => 'Parsing+Rendering',
   'parse' => 'Parsing',
   'render' => 'Rendering',
 }
 
-tasks = []
-versions = []
-scenarios = []
-sample_for_version_for_scenario_for_task = {}
-min_sample = nil
+benchmark = GRMustacheBenchmark.new(ROOT)
 
-Dir.glob(File.join(ROOT, 'Product', 'samples', '**', '*')).each do |path|
-  next unless File.extname(path) == '.samples'
-  
-  version = File.basename(path).gsub(/\.samples$/, '')
-  versions |= [version]
-  
-  task = File.basename(File.dirname(path))
-  tasks |= [task]
-  
-  scenario = File.basename(File.dirname(File.dirname(path)))
-  scenarios |= [scenario]
-  
-  samples = File.read(path).map { |sample_line| sample_line.strip.to_f }
-  samples = numbers_in_confidence_interval(samples, 0.5)  # keep 50% of the population
-  sample = samples.inject(&:+) / samples.count  # average
-  
-  min_sample = sample if min_sample.nil? || min_sample > sample
-  
-  sample_for_version_for_scenario_for_task[task] ||= {}
-  sample_for_version_for_scenario_for_task[task][scenario] ||= {}
-  sample_for_version_for_scenario_for_task[task][scenario][version] = sample
+benchmark.scenarios.each do |scenario|
+  benchmark.tasks.each do |task|
+    unless File.exist?(plots_path)
+      Dir.mkdir(plots_path)
+    end
+    gnuplot_data_path = File.join(plots_path, "#{scenario}-#{task}.dat")
+    File.open(gnuplot_data_path, 'w') do |f|
+      benchmark.versions.each_with_index do |version, index|
+        sample = begin benchmark.sample_for_version_scenario_task(version, scenario, task) / benchmark.min_sample rescue '' end
+        f.puts "#{version.gsub(/^[^\d]*/,'')}\t#{sample}"
+      end
+    end
+    plot_path = File.join(plots_path, "#{scenario}-#{task}.png")
+    title = "#{task} #{scenario}"
+    gnuplot_conf_path = File.join(plots_path, "#{scenario}-#{task}.conf")
+    File.open(gnuplot_conf_path, 'w') do |f|
+      f.write <<-GNUPLOT
+        set terminal png size 350,200 small
+
+        # Extract min and max values
+        set output "/dev/null"
+        ismin(x) = (x<Y_MIN)?Y_MIN=x:0
+        ismax(x) = (x>Y_MAX)?Y_MAX=x:0
+        Y_MAX=-1e38
+        Y_MIN=1e38
+        plot "#{gnuplot_data_path}" u :(ismin($2)*ismax($2))
+
+        set output "#{plot_path}"
+        set title "#{title}"
+        set tmarg 2
+        set rmarg 0
+        set bmargin 4
+        set lmarg 6
+        set xtics rotate
+        set yrange [0:Y_MAX*1.05]
+        set style data histogram
+        set style fill solid
+        plot "#{gnuplot_data_path}" using 2:xticlabels(1) title "", \
+             Y_MIN with lines title ""
+      GNUPLOT
+    end
+    `/usr/local/bin/gnuplot < #{gnuplot_conf_path}`
+    FileUtils.rm(gnuplot_data_path)
+    FileUtils.rm(gnuplot_conf_path)
+  end
 end
-
-versions = versions.sort_by { |version| version.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i }
-
 
 puts <<-MARKDOWN
 # GRMustache benchmarks
@@ -86,18 +75,18 @@ MARKDOWN
 
 time_precision = 1
 time_width = time_precision+6
-sample_column_width = [scenarios.map(&:length).max, time_width].max + 2
-version_column_width = versions.map(&:length).max + 2
+sample_column_width = [benchmark.scenarios.map(&:length).max, time_width].max + 2
+version_column_width = benchmark.versions.map(&:length).max + 2
 sample_format = "%%%d.%de" % [time_width, time_precision]
-line_format = ("\t%%-%ds" % version_column_width) + (("%%%ds" % sample_column_width) * scenarios.count)
-tasks.each do |task|
+line_format = ("\t%%-%ds" % version_column_width) + (("%%%ds" % sample_column_width) * benchmark.scenarios.count)
+benchmark.tasks.each do |task|
   puts
   puts "## #{LABEL_FOR_TASK[task]} task"
   puts
-  puts line_format % ([""]+scenarios)
-  versions.reverse.each do |version|
-    time_strings = scenarios.map do |scenario|
-      sample = begin sample_for_version_for_scenario_for_task[task][scenario][version] / min_sample rescue nil end
+  puts line_format % ([""]+benchmark.scenarios)
+  benchmark.versions.reverse.each do |version|
+    time_strings = benchmark.scenarios.map do |scenario|
+      sample = begin benchmark.sample_for_version_scenario_task(version, scenario, task) / benchmark.min_sample rescue nil end
       if sample
         sample_format % sample
       else
@@ -109,6 +98,24 @@ tasks.each do |task|
 end
 
 puts <<-MARKDOWN
+
+-----
+
+<table>
+MARKDOWN
+
+benchmark.tasks.each do |task|
+  puts "<tr>"
+    benchmark.scenarios.each do |scenario|
+      puts "<td>"
+      puts "<img src=\"/groue/GRMustacheBenchmark/raw/master/Plots/#{scenario}-#{task}.png\" alt=\"Plot for task '#{task}' and scenario '#{scenario}'\">"
+      puts "</td>"
+    end
+  puts "</tr>"
+end
+
+puts <<-MARKDOWN
+</table>
 
 -----
 
