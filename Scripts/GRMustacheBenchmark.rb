@@ -105,5 +105,10 @@ class GRMustacheBenchmark
     
     @versions = @versions.sort_by { |version| version.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i }
     
+    @tasks = ['combined'] + (@tasks - ['combined']) if @tasks.include?('combined')
+    @tasks = ['parse'] + (@tasks - ['parse']) if @tasks.include?('parse')
+    @tasks = ['render'] + (@tasks - ['render']) if @tasks.include?('render')
+    
+    self
   end
 end
