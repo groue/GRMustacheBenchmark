@@ -29,7 +29,7 @@ benchmark.scenarios.each do |scenario|
     gnuplot_conf_path = File.join(plots_path, "#{scenario}-#{task}.conf")
     File.open(gnuplot_conf_path, 'w') do |f|
       f.write <<-GNUPLOT
-        set terminal png size 350,200 small
+        set terminal png size 420,200 small
 
         # Extract min and max values
         set output "/dev/null"
@@ -101,7 +101,7 @@ puts <<-MARKDOWN
 
 -----
 
-<table>
+<table border="0" cellspacing="0" cellpadding="0">
 MARKDOWN
 
 benchmark.tasks.each do |task|

@@ -96,7 +96,7 @@ For each version and scenario, we benchmark three different tasks: parsing, rend
 
 -----
 
-<table>
+<table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td>
 <img src="/groue/GRMustacheBenchmark/raw/master/Plots/medium-render.png" alt="Plot for task 'render' and scenario 'medium'">
