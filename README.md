@@ -96,5 +96,34 @@ For each version and scenario, we benchmark three different tasks: parsing, rend
 
 -----
 
+<table>
+<tr>
+<td>
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/medium-combined.png" alt="Plot for task 'combined' and scenario 'medium'">
+</td>
+<td>
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/short-combined.png" alt="Plot for task 'combined' and scenario 'short'">
+</td>
+</tr>
+<tr>
+<td>
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/medium-parse.png" alt="Plot for task 'parse' and scenario 'medium'">
+</td>
+<td>
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/short-parse.png" alt="Plot for task 'parse' and scenario 'short'">
+</td>
+</tr>
+<tr>
+<td>
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/medium-render.png" alt="Plot for task 'render' and scenario 'medium'">
+</td>
+<td>
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/short-render.png" alt="Plot for task 'render' and scenario 'short'">
+</td>
+</tr>
+</table>
+
+-----
+
 This README.md file has been generated with the `make` command.
 
