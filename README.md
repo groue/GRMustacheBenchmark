@@ -6,6 +6,8 @@ GRMustache has been tested against random templates of various complexities, con
 
 For each version and complexity, we benchmark two different tasks: parsing, and rendering.
 
+Those benchmarks are relative, not absolute: numbers have no unit. They are all relative to the time taken by the shortest task, which is given the score 1.
+
 
 ## Rendering task
 
