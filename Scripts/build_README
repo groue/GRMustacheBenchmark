@@ -5,28 +5,27 @@ require File.join(File.dirname(__FILE__), 'GRMustacheBenchmark')
 ROOT = File.join(File.dirname(__FILE__), '..')
 plots_path = File.join(ROOT, 'Plots')
 LABEL_FOR_TASK = {
-  'combined' => 'Parsing+Rendering',
   'parse' => 'Parsing',
   'render' => 'Rendering',
 }
 
 benchmark = GRMustacheBenchmark.new(ROOT)
 
-benchmark.scenarios.each do |scenario|
+benchmark.complexities.each do |complexity|
   benchmark.tasks.each do |task|
     unless File.exist?(plots_path)
       Dir.mkdir(plots_path)
     end
-    gnuplot_data_path = File.join(plots_path, "#{scenario}-#{task}.dat")
+    gnuplot_data_path = File.join(plots_path, "#{complexity}-#{task}.dat")
     File.open(gnuplot_data_path, 'w') do |f|
       benchmark.versions.each_with_index do |version, index|
-        sample = begin benchmark.sample_for_version_scenario_task(version, scenario, task) / benchmark.min_sample rescue '' end
+        sample = begin benchmark.sample_for_version_complexity_task(version, complexity, task) / benchmark.min_sample rescue '' end
         f.puts "#{version.gsub(/^[^\d]*([\d])/,'\1')}\t#{sample}"
       end
     end
-    plot_path = File.join(plots_path, "#{scenario}-#{task}.png")
-    title = "#{task} #{scenario}"
-    gnuplot_conf_path = File.join(plots_path, "#{scenario}-#{task}.conf")
+    plot_path = File.join(plots_path, "#{complexity}-#{task}.png")
+    title = "#{task} #{complexity}"
+    gnuplot_conf_path = File.join(plots_path, "#{complexity}-#{task}.conf")
     File.open(gnuplot_conf_path, 'w') do |f|
       f.write <<-GNUPLOT
         set terminal png size 390,200 small
@@ -64,29 +63,26 @@ puts <<-MARKDOWN
 
 You can here compare the performance of all [GRMustache](https://github.com/groue/GRMustache) versions since v1.7.1 (the first shipped as a static library).
 
-GRMustache has been tested against the scenarios stored in the [Scenarios](GRMustacheBenchmark/tree/master/Scenarios) directory.
+GRMustache has been tested against random templates of various complexities, containing an average of 2, 10, or 100 elements (text, `{{variable}}` tags, or `{{#section}}` tags).
 
-- `medium`: a reasonable Mustache template, that comes straight from a real application.
-- `short`: a very very short template.
-
-For each version and scenario, we benchmark three different tasks: parsing, rendering, and combined parsing+rendering.
+For each version and complexity, we benchmark two different tasks: parsing, and rendering.
 
 MARKDOWN
 
 time_precision = 1
 time_width = time_precision+6
-sample_column_width = [benchmark.scenarios.map(&:length).max, time_width].max + 2
+sample_column_width = [benchmark.complexities.map(&:length).max, time_width].max + 2
 version_column_width = benchmark.versions.map(&:length).max + 2
 sample_format = "%%%d.%de" % [time_width, time_precision]
-line_format = ("\t%%-%ds" % version_column_width) + (("%%%ds" % sample_column_width) * benchmark.scenarios.count)
+line_format = ("\t%%-%ds" % version_column_width) + (("%%%ds" % sample_column_width) * benchmark.complexities.count)
 benchmark.tasks.each do |task|
   puts
   puts "## #{LABEL_FOR_TASK[task]} task"
   puts
-  puts line_format % ([""]+benchmark.scenarios)
+  puts line_format % ([""]+benchmark.complexities)
   benchmark.versions.reverse.each do |version|
-    time_strings = benchmark.scenarios.map do |scenario|
-      sample = begin benchmark.sample_for_version_scenario_task(version, scenario, task) / benchmark.min_sample rescue nil end
+    time_strings = benchmark.complexities.map do |complexity|
+      sample = begin benchmark.sample_for_version_complexity_task(version, complexity, task) / benchmark.min_sample rescue nil end
       if sample
         sample_format % sample
       else
@@ -104,11 +100,11 @@ puts <<-MARKDOWN
 <table border="0" cellspacing="0" cellpadding="0">
 MARKDOWN
 
-benchmark.tasks.each do |task|
+benchmark.complexities.each do |complexity|
   puts "<tr>"
-    benchmark.scenarios.each do |scenario|
+    benchmark.tasks.each do |task|
       puts "<td>"
-      puts "<img src=\"/groue/GRMustacheBenchmark/raw/master/Plots/#{scenario}-#{task}.png\" alt=\"Plot for task '#{task}' and scenario '#{scenario}'\">"
+      puts "<img src=\"/groue/GRMustacheBenchmark/raw/master/Plots/#{complexity}-#{task}.png\" alt=\"Plot for task '#{task}' and complexity '#{complexity}'\">"
       puts "</td>"
     end
   puts "</tr>"

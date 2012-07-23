@@ -16,16 +16,16 @@ class GRMustacheBenchmark
     @versions
   end
   
-  def scenarios
-    build if @scenarios.nil?
-    raise unless @scenarios
-    @scenarios
+  def complexities
+    build if @complexities.nil?
+    raise unless @complexities
+    @complexities
   end
   
-  def sample_for_version_scenario_task(version, scenario, task)
-    build if @sample_for_version_for_scenario_for_task.nil?
-    raise unless @sample_for_version_for_scenario_for_task
-    @sample_for_version_for_scenario_for_task[task][scenario][version]
+  def sample_for_version_complexity_task(version, complexity, task)
+    build if @sample_for_version_for_complexity_for_task.nil?
+    raise unless @sample_for_version_for_complexity_for_task
+    @sample_for_version_for_complexity_for_task[task][complexity][version]
   end
   
   def min_sample
@@ -76,8 +76,8 @@ class GRMustacheBenchmark
   def build
     @tasks = []
     @versions = []
-    @scenarios = []
-    @sample_for_version_for_scenario_for_task = {}
+    @complexities = []
+    @sample_for_version_for_complexity_for_task = {}
     @min_sample = nil
     
     Dir.glob(File.join(samples_path, '**', '*')).each do |path|
@@ -89,8 +89,8 @@ class GRMustacheBenchmark
       task = File.basename(File.dirname(path))
       @tasks |= [task]
       
-      scenario = File.basename(File.dirname(File.dirname(path)))
-      @scenarios |= [scenario]
+      complexity = File.basename(File.dirname(File.dirname(path)))
+      @complexities |= [complexity]
       
       samples = File.read(path).map { |sample_line| sample_line.strip.to_f }
       samples = numbers_in_confidence_interval(samples, 0.5)  # keep 50% of the population
@@ -98,14 +98,15 @@ class GRMustacheBenchmark
       
       @min_sample = sample if @min_sample.nil? || @min_sample > sample
       
-      @sample_for_version_for_scenario_for_task[task] ||= {}
-      @sample_for_version_for_scenario_for_task[task][scenario] ||= {}
-      @sample_for_version_for_scenario_for_task[task][scenario][version] = sample
+      @sample_for_version_for_complexity_for_task[task] ||= {}
+      @sample_for_version_for_complexity_for_task[task][complexity] ||= {}
+      @sample_for_version_for_complexity_for_task[task][complexity][version] = sample
     end
     
     @versions = @versions.sort_by { |version| version.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i }
     
-    @tasks = ['combined'] + (@tasks - ['combined']) if @tasks.include?('combined')
+    @complexities = @complexities.sort_by { |complexity| complexity.to_i }
+    
     @tasks = ['parse'] + (@tasks - ['parse']) if @tasks.include?('parse')
     @tasks = ['render'] + (@tasks - ['render']) if @tasks.include?('render')
     

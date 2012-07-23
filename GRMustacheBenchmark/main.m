@@ -9,6 +9,115 @@
 #import "GRMustache.h"
 #include <time.h>
 
+@interface RandomData : NSObject
+@end
+
+@implementation RandomData
+
+- (NSString *)description
+{
+    return @"text";
+}
+
+- (id)valueForKey:(NSString *)key
+{
+    return self;
+}
+
+@end
+
+@interface RandomTemplateStringProducer: NSObject
+- (NSString *)randomTemplateStringWithStopProbability:(float)p allowingText:(BOOL)allowText;
+- (NSString *)randomText;
+- (NSString *)randomIdentifier;
+- (NSString *)randomKeyPath;
+- (NSString *)randomVariableTag;
+- (NSString *)randomSectionWithInnerTemplateString:(NSString *)innerTemplateString;
+@end
+
+@implementation RandomTemplateStringProducer
+
+- (NSString *)randomTemplateStringWithStopProbability:(float)p allowingText:(BOOL)allowText
+{
+    NSString *templateString = nil;
+    
+    float r = ((float)arc4random()) / UINT32_MAX;
+    if (r <= p) {
+        if (allowText) {
+            templateString = [self randomText];
+        } else {
+            templateString = @"";
+        }
+    } else {
+        switch (arc4random() % (allowText ? 3 : 2)) {
+            case 0:
+                templateString = [NSString stringWithFormat:@"%@%@", [self randomVariableTag], [self randomTemplateStringWithStopProbability:p allowingText:YES]];
+                break;
+                
+            case 1:
+                templateString = [self randomSectionWithInnerTemplateString:[self randomTemplateStringWithStopProbability:p allowingText:YES]];
+                break;
+                
+            case 2:
+                templateString = [NSString stringWithFormat:@"%@%@", [self randomText], [self randomTemplateStringWithStopProbability:p allowingText:NO]];
+                break;
+                
+        }
+    }
+    
+    return templateString;
+}
+
+- (NSString *)randomText
+{
+    return @"text";
+}
+
+- (NSString *)randomIdentifier
+{
+    return @"name";
+}
+
+- (NSString *)randomKeyPath
+{
+    switch (arc4random() % 3) {
+        case 0:
+            return [self randomIdentifier];
+            
+        case 1:
+            return [NSString stringWithFormat:@"%@.%@", [self randomIdentifier], [self randomIdentifier]];
+            
+        case 2:
+            return [NSString stringWithFormat:@"%@.%@.%@", [self randomIdentifier], [self randomIdentifier], [self randomIdentifier]];
+    }
+    return nil;
+}
+
+- (NSString *)randomVariableTag
+{
+    NSString *keyPath = [self randomKeyPath];
+    switch (arc4random() % 4) {
+        case 0:
+        case 1:
+            return [NSString stringWithFormat:@"{{%@}}", keyPath];
+            
+        case 2:
+            return [NSString stringWithFormat:@"{{&%@}}", keyPath];
+            
+        case 3:
+            return [NSString stringWithFormat:@"{{{%@}}}", keyPath];
+    }
+    return nil;
+}
+
+- (NSString *)randomSectionWithInnerTemplateString:(NSString *)innerTemplateString
+{
+    NSString *keyPath = [self randomKeyPath];
+    return [NSString stringWithFormat:@"{{#%@}}%@{{/%@}}", keyPath, innerTemplateString, keyPath];
+}
+@end
+
+
 static double cpu_time_elapsed(void(^block)(void))
 {
     clock_t start, end;
@@ -23,7 +132,7 @@ int main (int argc, char * const argv[])
     @autoreleasepool {
         char *sampleCountCString = 0;
         char *verbCString = 0;
-        char *scenarioPathCString = 0;
+        char *complexityCString = 0;
         
         while (getopt(argc, argv, "") != -1) ;
         while (optind < argc) {
@@ -32,72 +141,62 @@ int main (int argc, char * const argv[])
             } else if (!verbCString) {
                 verbCString = argv[optind++];
             } else {
-                scenarioPathCString = argv[optind++];
+                complexityCString = argv[optind++];
                 break;
             }
         }
         
         NSUInteger sampleCount = 0; sscanf(sampleCountCString, "%d", &sampleCount);
         NSString *verb = [NSString stringWithCString:verbCString encoding:NSUTF8StringEncoding];
-        NSString *scenarioPath = [NSString stringWithCString:scenarioPathCString encoding:NSUTF8StringEncoding];
-        
-        NSString *scenarioTemplatePath = [scenarioPath stringByAppendingPathExtension:@"mustache"];
+        NSUInteger complexity = 0; sscanf(complexityCString, "%d", &complexity);
+        float stopProbability = 1.0/complexity;
+        RandomTemplateStringProducer *producer = [[RandomTemplateStringProducer alloc] init];
         
         if ([verb isEqualToString:@"parse"]) {
             // outputs parsing time
-            NSString *templateString = [NSString stringWithContentsOfFile:scenarioTemplatePath encoding:NSUTF8StringEncoding error:NULL];
-            double time = cpu_time_elapsed(^{
-                for (NSUInteger i=0; i<sampleCount; i++) {
+            double time = 0;
+            for (NSUInteger i=0; i<sampleCount; i++) {
+                NSString *templateString = [producer randomTemplateStringWithStopProbability:stopProbability allowingText:YES];
+                time += cpu_time_elapsed(^{
 #if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
                     [GRMustacheTemplate parseString:templateString error:NULL];
 #else
                     [GRMustacheTemplate templateFromString:templateString error:NULL];
 #endif
-                }
-            });
+                });
+            }
             printf("%g\n", time/sampleCount);
             
         } else if ([verb isEqualToString:@"render"]) {
             // outputs rendering time
             
+            id randomData = [RandomData new];
+            double time = 0;
+            for (NSUInteger i=0; i<sampleCount; i++) {
+                NSString *templateString = [producer randomTemplateStringWithStopProbability:stopProbability allowingText:YES];
 #if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
-            GRMustacheTemplate *template = [GRMustacheTemplate parseContentsOfFile:scenarioTemplatePath error:NULL];
+                GRMustacheTemplate *template = [GRMustacheTemplate parseString:templateString error:NULL];
 #else
-            GRMustacheTemplate *template = [GRMustacheTemplate templateFromContentsOfFile:scenarioTemplatePath error:NULL];
+                GRMustacheTemplate *template = [GRMustacheTemplate templateFromString:templateString error:NULL];
 #endif
-            NSString *dictionaryTemplatePath = [scenarioPath stringByAppendingPathExtension:@"plist"];
-            NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:dictionaryTemplatePath];
-            double time = cpu_time_elapsed(^{
-                for (NSUInteger i=0; i<sampleCount; i++) {
-                    [template renderObject:dictionary];
-                }
-            });
+                time += cpu_time_elapsed(^{
+                    [template renderObject:randomData];
+                });
+            }
             printf("%g\n", time/sampleCount);
             
         } else if ([verb isEqualToString:@"combined"]) {
             // outputs parsing + rendering time
             
-            NSString *templateString = [NSString stringWithContentsOfFile:scenarioTemplatePath encoding:NSUTF8StringEncoding error:NULL];
-            NSString *dictionaryTemplatePath = [scenarioPath stringByAppendingPathExtension:@"plist"];
-            NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:dictionaryTemplatePath];
-            double time = cpu_time_elapsed(^{
-                for (NSUInteger i=0; i<sampleCount; i++) {
-                    [GRMustacheTemplate renderObject:dictionary fromString:templateString error:NULL];
-                }
-            });
+            double time = 0;
+            id randomData = [RandomData new];
+            for (NSUInteger i=0; i<sampleCount; i++) {
+                NSString *templateString = [producer randomTemplateStringWithStopProbability:stopProbability allowingText:YES];
+                time += cpu_time_elapsed(^{
+                    [GRMustacheTemplate renderObject:randomData fromString:templateString error:NULL];
+                });
+            }
             printf("%g\n", time/sampleCount);
-            
-        } else if ([verb isEqualToString:@"check"]) {
-            // outputs template rendering
-            
-#if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
-            GRMustacheTemplate *template = [GRMustacheTemplate parseContentsOfFile:scenarioTemplatePath error:NULL];
-#else
-            GRMustacheTemplate *template = [GRMustacheTemplate templateFromContentsOfFile:scenarioTemplatePath error:NULL];
-#endif
-            NSString *dictionaryTemplatePath = [scenarioPath stringByAppendingPathExtension:@"plist"];
-            NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:dictionaryTemplatePath];
-            printf("%s\n", [[template renderObject:dictionary] cStringUsingEncoding:NSUTF8StringEncoding]);
             
         }
         

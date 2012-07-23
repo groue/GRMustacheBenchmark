@@ -2,132 +2,102 @@
 
 You can here compare the performance of all [GRMustache](https://github.com/groue/GRMustache) versions since v1.7.1 (the first shipped as a static library).
 
-GRMustache has been tested against the scenarios stored in the [Scenarios](GRMustacheBenchmark/tree/master/Scenarios) directory.
+GRMustache has been tested against random templates of various complexities, containing an average of 2, 10, or 100 elements (text, `{{variable}}` tags, or `{{#section}}` tags).
 
-- `medium`: a reasonable Mustache template, that comes straight from a real application.
-- `short`: a very very short template.
-
-For each version and scenario, we benchmark three different tasks: parsing, rendering, and combined parsing+rendering.
+For each version and complexity, we benchmark two different tasks: parsing, and rendering.
 
 
 ## Rendering task
 
-	            medium    short
-	v4.0.0     1.3e+02  1.0e+00
-	v3.0.1     6.5e+02  1.1e+00
-	v3.0.0     6.5e+02  1.0e+00
-	v2.0.0     6.5e+02  1.1e+00
-	v1.13.0    7.7e+02  1.7e+00
-	v1.12.2    7.7e+02  1.6e+00
-	v1.12.1    7.7e+02  1.7e+00
-	v1.12.0    7.7e+02  1.6e+00
-	v1.11.2    7.6e+02  1.7e+00
-	v1.11.1    7.2e+02  1.7e+00
-	v1.11.0    7.2e+02  1.7e+00
-	v1.10.3    7.2e+02  1.6e+00
-	v1.10.2    7.2e+02  1.6e+00
-	v1.10.1    8.9e+02  4.5e+00
-	v1.10.0    9.3e+02  4.9e+00
-	v1.9.0     1.0e+03  7.1e+00
-	v1.8.6     1.0e+03  7.1e+00
-	v1.8.5     9.9e+02  6.9e+00
-	v1.8.4     9.9e+02  6.9e+00
-	v1.8.3     9.9e+02  6.9e+00
-	v1.8.2     9.9e+02  6.9e+00
-	v1.8.1     9.9e+02  7.0e+00
-	v1.8.0     9.9e+02  7.0e+00
-	v1.7.4     9.6e+02  6.1e+00
-	v1.7.3     9.6e+02  6.1e+00
-	v1.7.2     9.6e+02  6.1e+00
-	v1.7.1     9.6e+02  6.1e+00
+	                 2       10      100
+	v4.1.1     1.0e+00  4.5e+00  4.2e+01
+	v4.1.0     1.0e+00  4.5e+00  4.3e+01
+	v4.0.0     1.0e+00  4.6e+00  4.2e+01
+	v3.0.1     1.0e+00  4.6e+00  4.2e+01
+	v3.0.0     1.0e+00  4.7e+00  4.2e+01
+	v2.0.0     1.0e+00  4.6e+00  4.2e+01
+	v1.13.0    1.1e+00  5.1e+00  4.6e+01
+	v1.12.2    1.1e+00  5.2e+00  5.0e+01
+	v1.12.1    1.1e+00  5.2e+00  5.0e+01
+	v1.12.0    1.1e+00  5.3e+00  5.0e+01
+	v1.11.2    1.1e+00  5.2e+00  5.1e+01
+	v1.11.1    1.1e+00  5.2e+00  5.1e+01
+	v1.11.0    1.1e+00  5.2e+00  5.2e+01
+	v1.10.3    1.1e+00  5.2e+00  5.2e+01
+	v1.10.2    1.1e+00  5.2e+00  5.1e+01
+	v1.10.1    1.9e+00  1.2e+01  1.2e+02
+	v1.10.0    2.0e+00  1.3e+01  1.4e+02
+	v1.9.0     2.0e+00  1.1e+01  1.1e+02
+	v1.8.6     2.0e+00  1.1e+01  1.1e+02
+	v1.8.5     2.0e+00  1.1e+01  1.1e+02
+	v1.8.4     1.9e+00  1.1e+01  1.1e+02
+	v1.8.3     1.9e+00  1.1e+01  1.1e+02
+	v1.8.2     1.9e+00  1.1e+01  1.1e+02
+	v1.8.1     1.9e+00  1.1e+01  1.1e+02
+	v1.8.0     1.9e+00  1.1e+01  1.1e+02
+	v1.7.4     1.7e+00  9.8e+00  1.0e+02
+	v1.7.3     1.7e+00  1.0e+01  1.0e+02
+	v1.7.2     1.6e+00  9.8e+00  1.0e+02
+	v1.7.1     1.7e+00  9.6e+00  9.9e+01
 
 ## Parsing task
 
-	            medium    short
-	v4.0.0     1.3e+02  1.3e+01
-	v3.0.1     1.3e+02  1.3e+01
-	v3.0.0     1.3e+02  1.3e+01
-	v2.0.0     1.3e+02  1.4e+01
-	v1.13.0    1.4e+02  1.4e+01
-	v1.12.2    1.2e+02  1.2e+01
-	v1.12.1    1.7e+02  1.6e+01
-	v1.12.0    1.2e+02  1.2e+01
-	v1.11.2    1.2e+02  1.2e+01
-	v1.11.1    1.2e+02  1.2e+01
-	v1.11.0    1.2e+02  1.2e+01
-	v1.10.3    1.2e+02  1.2e+01
-	v1.10.2    1.2e+02  1.2e+01
-	v1.10.1    1.2e+02  1.2e+01
-	v1.10.0    1.1e+02  1.2e+01
-	v1.9.0     9.5e+01  1.1e+01
-	v1.8.6     9.3e+01  1.1e+01
-	v1.8.5     9.4e+01  1.1e+01
-	v1.8.4     9.4e+01  1.1e+01
-	v1.8.3     9.3e+01  1.1e+01
-	v1.8.2     9.4e+01  1.1e+01
-	v1.8.1     9.4e+01  1.1e+01
-	v1.8.0     9.4e+01  1.1e+01
-	v1.7.4     9.3e+01  1.0e+01
-	v1.7.3     9.3e+01  1.0e+01
-	v1.7.2     9.3e+01  1.0e+01
-	v1.7.1     9.3e+01  9.8e+00
-
-## Parsing+Rendering task
-
-	            medium    short
-	v4.0.0     2.9e+02  1.8e+01
-	v3.0.1     8.2e+02  1.8e+01
-	v3.0.0     8.2e+02  1.8e+01
-	v2.0.0     8.2e+02  1.8e+01
-	v1.13.0    9.4e+02  1.9e+01
-	v1.12.2    9.4e+02  1.9e+01
-	v1.12.1    9.9e+02  2.2e+01
-	v1.12.0    9.4e+02  1.8e+01
-	v1.11.2    9.3e+02  1.9e+01
-	v1.11.1    8.9e+02  1.8e+01
-	v1.11.0    8.9e+02  1.8e+01
-	v1.10.3    8.9e+02  1.8e+01
-	v1.10.2    8.9e+02  1.8e+01
-	v1.10.1    1.1e+03  2.2e+01
-	v1.10.0    1.1e+03  2.2e+01
-	v1.9.0     1.2e+03  2.3e+01
-	v1.8.6     1.2e+03  2.3e+01
-	v1.8.5     1.1e+03  2.3e+01
-	v1.8.4     1.1e+03  2.3e+01
-	v1.8.3     1.1e+03  2.3e+01
-	v1.8.2     1.1e+03  2.3e+01
-	v1.8.1     1.1e+03  2.3e+01
-	v1.8.0     1.1e+03  2.3e+01
-	v1.7.4     1.1e+03  2.1e+01
-	v1.7.3     1.1e+03  2.1e+01
-	v1.7.2     1.1e+03  2.1e+01
-	v1.7.1     1.1e+03  2.1e+01
+	                 2       10      100
+	v4.1.1     3.2e+00  1.4e+01  1.3e+02
+	v4.1.0     3.1e+00  1.4e+01  1.4e+02
+	v4.0.0     3.2e+00  1.4e+01  1.3e+02
+	v3.0.1     3.2e+00  1.4e+01  1.3e+02
+	v3.0.0     3.2e+00  1.4e+01  1.3e+02
+	v2.0.0     3.2e+00  1.4e+01  1.3e+02
+	v1.13.0    3.3e+00  1.5e+01  1.4e+02
+	v1.12.2    3.0e+00  1.3e+01  1.3e+02
+	v1.12.1    3.6e+00  1.8e+01  1.8e+02
+	v1.12.0    3.0e+00  1.3e+01  1.2e+02
+	v1.11.2    3.0e+00  1.3e+01  1.3e+02
+	v1.11.1    3.0e+00  1.3e+01  1.2e+02
+	v1.11.0    2.9e+00  1.3e+01  1.2e+02
+	v1.10.3    2.9e+00  1.3e+01  1.2e+02
+	v1.10.2    2.9e+00  1.3e+01  1.2e+02
+	v1.10.1    3.0e+00  1.3e+01  1.2e+02
+	v1.10.0    2.8e+00  1.2e+01  1.1e+02
+	v1.9.0     2.7e+00  9.7e+00  8.5e+01
+	v1.8.6     2.7e+00  9.7e+00  8.5e+01
+	v1.8.5     2.7e+00  9.6e+00  8.5e+01
+	v1.8.4     2.7e+00  9.7e+00  8.6e+01
+	v1.8.3     2.7e+00  9.7e+00  8.5e+01
+	v1.8.2     2.7e+00  9.6e+00  8.3e+01
+	v1.8.1     2.7e+00  9.6e+00  8.5e+01
+	v1.8.0     2.7e+00  9.7e+00  8.5e+01
+	v1.7.4     2.6e+00  9.5e+00  8.5e+01
+	v1.7.3     2.6e+00  9.8e+00  8.6e+01
+	v1.7.2     2.6e+00  9.7e+00  8.7e+01
+	v1.7.1     2.4e+00  9.4e+00  8.7e+01
 
 -----
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/medium-render.png" alt="Plot for task 'render' and scenario 'medium'">
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/2-render.png" alt="Plot for task 'render' and complexity '2'">
 </td>
 <td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/short-render.png" alt="Plot for task 'render' and scenario 'short'">
-</td>
-</tr>
-<tr>
-<td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/medium-parse.png" alt="Plot for task 'parse' and scenario 'medium'">
-</td>
-<td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/short-parse.png" alt="Plot for task 'parse' and scenario 'short'">
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/2-parse.png" alt="Plot for task 'parse' and complexity '2'">
 </td>
 </tr>
 <tr>
 <td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/medium-combined.png" alt="Plot for task 'combined' and scenario 'medium'">
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/10-render.png" alt="Plot for task 'render' and complexity '10'">
 </td>
 <td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/short-combined.png" alt="Plot for task 'combined' and scenario 'short'">
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/10-parse.png" alt="Plot for task 'parse' and complexity '10'">
+</td>
+</tr>
+<tr>
+<td>
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/100-render.png" alt="Plot for task 'render' and complexity '100'">
+</td>
+<td>
+<img src="/groue/GRMustacheBenchmark/raw/master/Plots/100-parse.png" alt="Plot for task 'parse' and complexity '100'">
 </td>
 </tr>
 </table>

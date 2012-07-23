@@ -1,13 +1,7 @@
-VERSIONS = v4.0.0 v3.0.1 v3.0.0 v2.0.0 v1.13.0 v1.12.2 v1.12.1 v1.12.0 v1.11.2 v1.11.1 v1.11.0 v1.10.3 v1.10.2 v1.10.1 v1.10.0 v1.9.0 v1.8.6 v1.8.5 v1.8.4 v1.8.3 v1.8.2 v1.8.1 v1.8.0 v1.7.4 v1.7.3 v1.7.2 v1.7.1
-LATEST = v4.0.0
-SCENARIOS = short medium
-TASKS = parse render combined
-SAMPLE_COUNT_short_parse = 50000
-SAMPLE_COUNT_short_render = 300000
-SAMPLE_COUNT_short_combined = 25000
-SAMPLE_COUNT_medium_parse = 4000
-SAMPLE_COUNT_medium_render = 1000
-SAMPLE_COUNT_medium_combined = 500
+VERSIONS = v4.1.1 v4.1.0 v4.0.0 v3.0.1 v3.0.0 v2.0.0 v1.13.0 v1.12.2 v1.12.1 v1.12.0 v1.11.2 v1.11.1 v1.11.0 v1.10.3 v1.10.2 v1.10.1 v1.10.0 v1.9.0 v1.8.6 v1.8.5 v1.8.4 v1.8.3 v1.8.2 v1.8.1 v1.8.0 v1.7.4 v1.7.3 v1.7.2 v1.7.1
+LATEST = v4.1.1
+COMPLEXITIES = 2 10 100
+TASKS = parse render
 
 all: README.md
 
@@ -15,8 +9,8 @@ README.md: $(foreach version,$(VERSIONS),version_samples_$(version))
 	Scripts/build_README > README.md
 
 define VERSION_SAMPLES_template
-$(foreach scenario,$(SCENARIOS),$(eval $(call VERSION_SCENARIO_template,$(1),$(scenario))))
-version_samples_$(1): $(foreach task,$(TASKS),$(foreach scenario,$(SCENARIOS),Product/samples/$(scenario)/$(task)/$(1).samples))
+$(foreach complexity,$(COMPLEXITIES),$(eval $(call VERSION_COMPLEXITY_template,$(1),$(complexity))))
+version_samples_$(1): $(foreach task,$(TASKS),$(foreach complexity,$(COMPLEXITIES),Product/samples/$(complexity)/$(task)/$(1).samples))
 Product/build/$(1)/Release/GRMustacheBenchmark: Product/lib/GRMustache-$(1)/lib/libGRMustache.a Product/lib/GRMustache-$(1)/include/GRMustache.h
 	rm -f Product/lib/GRMustache
 	ln -s GRMustache-$(1) Product/lib/GRMustache
@@ -44,14 +38,14 @@ clean_version_lib_$(1):
 	rm -rf Product/lib/GRMustache-$(1)
 endef
 
-define VERSION_SCENARIO_template
-$(foreach task,$(TASKS),$(eval $(call VERSION_SCENARIO_TASK_template,$(1),$(2),$(task))))
+define VERSION_COMPLEXITY_template
+$(foreach task,$(TASKS),$(eval $(call VERSION_COMPLEXITY_TASK_template,$(1),$(2),$(task))))
 endef
 
-define VERSION_SCENARIO_TASK_template
+define VERSION_COMPLEXITY_TASK_template
 Product/samples/$(2)/$(3)/$(1).samples: Product/build/$(1)/Release/GRMustacheBenchmark
 	mkdir -p Product/samples/$(2)/$(3)
-	Scripts/repeat 20 Product/build/$(1)/Release/GRMustacheBenchmark 500 $(3) Scenarios/$(2) | tee Product/samples/$(2)/$(3)/$(1).samples
+	Scripts/repeat 20 Product/build/$(1)/Release/GRMustacheBenchmark 1000 $(3) $(2) | tee Product/samples/$(2)/$(3)/$(1).samples
 endef
 
 $(foreach version,$(VERSIONS),$(eval $(call VERSION_SAMPLES_template,$(version))))
