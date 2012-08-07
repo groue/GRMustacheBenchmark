@@ -24,7 +24,7 @@ benchmark.complexities.each do |complexity|
       end
     end
     plot_path = File.join(plots_path, "#{complexity}-#{task}.png")
-    title = "#{task} #{complexity}"
+    title = "#{task} (complexity #{complexity})"
     gnuplot_conf_path = File.join(plots_path, "#{complexity}-#{task}.conf")
     File.open(gnuplot_conf_path, 'w') do |f|
       f.write <<-GNUPLOT
