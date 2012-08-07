@@ -45,7 +45,6 @@ Those benchmarks are relative, not absolute: numbers have no unit. They are all 
 	v1.7.3     1.7e+00  9.9e+00  1.0e+02
 	v1.7.2     1.6e+00  9.9e+00  1.0e+02
 	v1.7.1     1.7e+00  9.7e+00  9.9e+01
-	LOCAL      1.2e+00  4.1e+00  3.6e+01
 
 ## Parsing task
 
@@ -83,7 +82,6 @@ Those benchmarks are relative, not absolute: numbers have no unit. They are all 
 	v1.7.3     2.6e+00  9.7e+00  8.8e+01
 	v1.7.2     2.6e+00  9.9e+00  8.9e+01
 	v1.7.1     2.5e+00  9.8e+00  8.8e+01
-	LOCAL      3.4e+00  1.6e+01  1.7e+02
 
 -----
 
