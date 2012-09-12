@@ -19,7 +19,7 @@
     return @"text";
 }
 
-- (id)valueForKey:(NSString *)key
+- (id)valueForUndefinedKey:(NSString *)key
 {
     return self;
 }
@@ -146,9 +146,9 @@ int main (int argc, char * const argv[])
             }
         }
         
-        NSUInteger sampleCount = 0; sscanf(sampleCountCString, "%d", &sampleCount);
+        NSUInteger sampleCount = 0; sscanf(sampleCountCString, "%ld", &sampleCount);
         NSString *verb = [NSString stringWithCString:verbCString encoding:NSUTF8StringEncoding];
-        NSUInteger complexity = 0; sscanf(complexityCString, "%d", &complexity);
+        NSUInteger complexity = 0; sscanf(complexityCString, "%ld", &complexity);
         float stopProbability = 1.0/complexity;
         RandomTemplateStringProducer *producer = [[RandomTemplateStringProducer alloc] init];
         
