@@ -27,7 +27,7 @@
 @end
 
 @interface RandomTemplateStringProducer: NSObject
-- (NSString *)randomTemplateStringWithStopProbability:(float)p allowingText:(BOOL)allowText;
+- (NSString *)randomTemplateStringWithComplexity:(NSUInteger)complexity allowingText:(BOOL)allowText;
 - (NSString *)randomText;
 - (NSString *)randomIdentifier;
 - (NSString *)randomKeyPath;
@@ -37,35 +37,20 @@
 
 @implementation RandomTemplateStringProducer
 
-- (NSString *)randomTemplateStringWithStopProbability:(float)p allowingText:(BOOL)allowText
+- (NSString *)randomTemplateStringWithComplexity:(NSUInteger)complexity allowingText:(BOOL)allowText
 {
-    NSString *templateString = nil;
-    
-    float r = ((float)arc4random()) / UINT32_MAX;
-    if (r <= p) {
-        if (allowText) {
-            templateString = [self randomText];
-        } else {
-            templateString = @"";
-        }
-    } else {
-        switch (arc4random() % (allowText ? 3 : 2)) {
-            case 0:
-                templateString = [NSString stringWithFormat:@"%@%@", [self randomVariableTag], [self randomTemplateStringWithStopProbability:p allowingText:YES]];
-                break;
-                
-            case 1:
-                templateString = [self randomSectionWithInnerTemplateString:[self randomTemplateStringWithStopProbability:p allowingText:YES]];
-                break;
-                
-            case 2:
-                templateString = [NSString stringWithFormat:@"%@%@", [self randomText], [self randomTemplateStringWithStopProbability:p allowingText:NO]];
-                break;
-                
-        }
+    if (complexity == 0) {
+        return @"";
     }
     
-    return templateString;
+    switch (arc4random() % (allowText ? 3 : 2)) {
+        case 0:
+            return [NSString stringWithFormat:@"%@%@", [self randomVariableTag], [self randomTemplateStringWithComplexity:complexity-1 allowingText:YES]];
+        case 1:
+            return [self randomSectionWithInnerTemplateString:[self randomTemplateStringWithComplexity:complexity-1 allowingText:YES]];
+    }
+    
+    return [NSString stringWithFormat:@"%@%@", [self randomText], [self randomTemplateStringWithComplexity:complexity-1 allowingText:NO]];
 }
 
 - (NSString *)randomText
@@ -149,14 +134,13 @@ int main (int argc, char * const argv[])
         NSUInteger sampleCount = 0; sscanf(sampleCountCString, "%ld", &sampleCount);
         NSString *verb = [NSString stringWithCString:verbCString encoding:NSUTF8StringEncoding];
         NSUInteger complexity = 0; sscanf(complexityCString, "%ld", &complexity);
-        float stopProbability = 1.0/complexity;
         RandomTemplateStringProducer *producer = [[RandomTemplateStringProducer alloc] init];
         
         if ([verb isEqualToString:@"parse"]) {
             // outputs parsing time
             double time = 0;
             for (NSUInteger i=0; i<sampleCount; i++) {
-                NSString *templateString = [producer randomTemplateStringWithStopProbability:stopProbability allowingText:YES];
+                NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
                 time += cpu_time_elapsed(^{
 #if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
                     [GRMustacheTemplate parseString:templateString error:NULL];
@@ -173,7 +157,7 @@ int main (int argc, char * const argv[])
             id randomData = [RandomData new];
             double time = 0;
             for (NSUInteger i=0; i<sampleCount; i++) {
-                NSString *templateString = [producer randomTemplateStringWithStopProbability:stopProbability allowingText:YES];
+                NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
 #if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
                 GRMustacheTemplate *template = [GRMustacheTemplate parseString:templateString error:NULL];
 #else
@@ -191,7 +175,7 @@ int main (int argc, char * const argv[])
             double time = 0;
             id randomData = [RandomData new];
             for (NSUInteger i=0; i<sampleCount; i++) {
-                NSString *templateString = [producer randomTemplateStringWithStopProbability:stopProbability allowingText:YES];
+                NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
                 time += cpu_time_elapsed(^{
                     [GRMustacheTemplate renderObject:randomData fromString:templateString error:NULL];
                 });
