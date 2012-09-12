@@ -11,6 +11,12 @@ Edit Makefile, add a GRMustache git tag to the VERSIONS variable, update LATEST 
     make clean_version_samples_v1.10.2
     make version_samples_v1.10.2
 
+### After a GRMustacheBenchmark implementation change
+
+	make clean_build
+	make clean_samples
+	make
+	
 ### Compare LOCAL GRMustache to LATEST version
 
 Local GRMustache is the GRMustache repository located in the same folder as this GRMustacheBenchmark repository.
@@ -23,5 +29,5 @@ Local GRMustache is the GRMustache repository located in the same folder as this
 
 ### List all make targets:
 
-    make -pn | grep -P "^[^\s#%.(].*:" | grep -v "=" | grep -v "\\$" | grep -v "^Makefile:$" | sed "s/:.*//" | sort
+    make -pn | grep "^[^\s#%.(].*:" | grep -v "=" | grep -v "\\$" | grep -v "^Makefile:$" | sed "s/:.*//" | sort
 
