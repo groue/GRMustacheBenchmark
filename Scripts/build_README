@@ -61,7 +61,7 @@ end
 puts <<-MARKDOWN
 # GRMustache benchmarks
 
-You can here compare the performance of all [GRMustache](https://github.com/groue/GRMustache) versions since v1.7.1 (the first shipped as a static library).
+You can here compare the performance of all [GRMustache](https://github.com/groue/GRMustache) versions since v1.10.2.
 
 GRMustache has been tested against random templates of various complexities, containing an average of 2, 10, or 100 elements (text, `{{variable}}` tags, or `{{#section}}` tags).
 
