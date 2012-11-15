@@ -13,10 +13,15 @@ Edit Makefile, add a GRMustache git tag to the VERSIONS variable, update LATEST 
 
 ### After a GRMustacheBenchmark implementation change
 
-	make clean_build
-	make clean_samples
-	make
-	
+    make clean_build
+    make clean_samples
+    make
+
+### Install LOCAL GRMustache into GRMustacheBenchmark project
+
+    make clean_version_LOCAL
+    Product/build/LOCAL/Release/GRMustacheBenchmark
+    
 ### Compare LOCAL GRMustache to LATEST version
 
 Local GRMustache is the GRMustache repository located in the same folder as this GRMustacheBenchmark repository.
