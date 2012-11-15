@@ -20,7 +20,7 @@ Edit Makefile, add a GRMustache git tag to the VERSIONS variable, update LATEST 
 ### Install LOCAL GRMustache into GRMustacheBenchmark project
 
     make clean_version_LOCAL
-    Product/build/LOCAL/Release/GRMustacheBenchmark
+    make Product/build/LOCAL/Release/GRMustacheBenchmark
     
 ### Compare LOCAL GRMustache to LATEST version
 
