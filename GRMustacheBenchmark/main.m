@@ -202,9 +202,9 @@ int main (int argc, char * const argv[])
             double time = 0;
             id data = @{@"name" : @"Arthur", @"items" : @[@{@"name" : @"Ham"}, @{@"name" : @"Jam"}]};
 #if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
-            GRMustacheTemplate *template = [GRMustacheTemplate parseString:@"{{{name}}} has {{#items}}{{{name}}},{{/items}}" error:NULL];
+            GRMustacheTemplate *template = [GRMustacheTemplate parseString:@"{{name}} has {{#items}}{{name}},{{/items}}" error:NULL];
 #else
-            GRMustacheTemplate *template = [GRMustacheTemplate templateFromString:@"{{{name}}} has {{#items}}{{{name}}},{{/items}}" error:NULL];
+            GRMustacheTemplate *template = [GRMustacheTemplate templateFromString:@"{{name}} has {{#items}}{{name}},{{/items}}" error:NULL];
 #endif
             for (NSUInteger i=0; i<sampleCount; i++) {
                 time += cpu_time_elapsed(^{
