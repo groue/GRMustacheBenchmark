@@ -12,6 +12,10 @@ Those benchmarks are relative, not absolute: numbers have no unit. They are all 
 ## Rendering task
 
 	                 2       10      100
+	v6.2.0     1.3e+00  3.2e+00  2.4e+01
+	v6.1.4     1.3e+00  3.2e+00  2.3e+01
+	v6.1.3     1.2e+00  3.1e+00  2.3e+01
+	v6.1.2     1.2e+00  3.1e+00  2.3e+01
 	v6.1.1     1.3e+00  3.2e+00  2.4e+01
 	v6.1.0     1.7e+00  4.6e+00  4.4e+01
 	v6.0.1     1.6e+00  4.7e+00  4.5e+01
@@ -54,6 +58,10 @@ Those benchmarks are relative, not absolute: numbers have no unit. They are all 
 ## Parsing task
 
 	                 2       10      100
+	v6.2.0     3.7e+00  1.3e+01  1.2e+02
+	v6.1.4     3.4e+00  1.2e+01  1.2e+02
+	v6.1.3     3.4e+00  1.2e+01  1.2e+02
+	v6.1.2     3.4e+00  1.2e+01  1.2e+02
 	v6.1.1     3.4e+00  1.3e+01  1.2e+02
 	v6.1.0     3.6e+00  1.2e+01  1.2e+02
 	v6.0.1     3.5e+00  1.2e+01  1.2e+02
