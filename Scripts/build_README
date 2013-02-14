@@ -76,7 +76,7 @@ benchmark.complexities.each do |complexity|
   puts "<tr>"
     benchmark.tasks.each do |task|
       puts "<td>"
-      puts "<img src=\"/groue/GRMustacheBenchmark/master/Plots/#{complexity}-#{task}.png\" alt=\"Plot for task '#{task}' and complexity '#{complexity}'\">"
+      puts "<img src=\"Plots/#{complexity}-#{task}.png\" alt=\"Plot for task '#{task}' and complexity '#{complexity}'\">"
       puts "</td>"
     end
   puts "</tr>"
