@@ -8,6 +8,33 @@ For each version and complexity, we benchmark two different tasks: parsing, and 
 
 Those benchmarks are relative, not absolute: numbers have no unit. They are all relative to the time taken by the shortest task, which is given the score 1.
 
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td>
+<img src="/groue/GRMustacheBenchmark/master/Plots/2-render.png" alt="Plot for task 'render' and complexity '2'">
+</td>
+<td>
+<img src="/groue/GRMustacheBenchmark/master/Plots/2-parse.png" alt="Plot for task 'parse' and complexity '2'">
+</td>
+</tr>
+<tr>
+<td>
+<img src="/groue/GRMustacheBenchmark/master/Plots/10-render.png" alt="Plot for task 'render' and complexity '10'">
+</td>
+<td>
+<img src="/groue/GRMustacheBenchmark/master/Plots/10-parse.png" alt="Plot for task 'parse' and complexity '10'">
+</td>
+</tr>
+<tr>
+<td>
+<img src="/groue/GRMustacheBenchmark/master/Plots/100-render.png" alt="Plot for task 'render' and complexity '100'">
+</td>
+<td>
+<img src="/groue/GRMustacheBenchmark/master/Plots/100-parse.png" alt="Plot for task 'parse' and complexity '100'">
+</td>
+</tr>
+</table>
+
 
 ## Rendering task
 
@@ -66,35 +93,6 @@ Those benchmarks are relative, not absolute: numbers have no unit. They are all 
 	v1.9.0     2.9e+00  8.9e+00  8.3e+01
 	v1.8.6     3.1e+00  9.0e+00  8.2e+01
 	v1.7.4     2.8e+00  8.9e+00  8.2e+01
-
------
-
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/2-render.png" alt="Plot for task 'render' and complexity '2'">
-</td>
-<td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/2-parse.png" alt="Plot for task 'parse' and complexity '2'">
-</td>
-</tr>
-<tr>
-<td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/10-render.png" alt="Plot for task 'render' and complexity '10'">
-</td>
-<td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/10-parse.png" alt="Plot for task 'parse' and complexity '10'">
-</td>
-</tr>
-<tr>
-<td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/100-render.png" alt="Plot for task 'render' and complexity '100'">
-</td>
-<td>
-<img src="/groue/GRMustacheBenchmark/raw/master/Plots/100-parse.png" alt="Plot for task 'parse' and complexity '100'">
-</td>
-</tr>
-</table>
 
 -----
 

@@ -69,7 +69,24 @@ For each version and complexity, we benchmark two different tasks: parsing, and 
 
 Those benchmarks are relative, not absolute: numbers have no unit. They are all relative to the time taken by the shortest task, which is given the score 1.
 
+<table border="0" cellspacing="0" cellpadding="0">
 MARKDOWN
+
+benchmark.complexities.each do |complexity|
+  puts "<tr>"
+    benchmark.tasks.each do |task|
+      puts "<td>"
+      puts "<img src=\"/groue/GRMustacheBenchmark/master/Plots/#{complexity}-#{task}.png\" alt=\"Plot for task '#{task}' and complexity '#{complexity}'\">"
+      puts "</td>"
+    end
+  puts "</tr>"
+end
+
+puts <<-MARKDOWN
+</table>
+
+MARKDOWN
+
 
 time_precision = 1
 time_width = time_precision+6
@@ -96,24 +113,6 @@ benchmark.tasks.each do |task|
 end
 
 puts <<-MARKDOWN
-
------
-
-<table border="0" cellspacing="0" cellpadding="0">
-MARKDOWN
-
-benchmark.complexities.each do |complexity|
-  puts "<tr>"
-    benchmark.tasks.each do |task|
-      puts "<td>"
-      puts "<img src=\"/groue/GRMustacheBenchmark/raw/master/Plots/#{complexity}-#{task}.png\" alt=\"Plot for task '#{task}' and complexity '#{complexity}'\">"
-      puts "</td>"
-    end
-  puts "</tr>"
-end
-
-puts <<-MARKDOWN
-</table>
 
 -----
 
