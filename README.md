@@ -60,7 +60,6 @@ Numbers have no unit: they are all relative to the time taken by the shortest ta
 	v1.12.2    1.5e+00  4.5e+00  3.9e+01
 	v1.11.2    1.4e+00  4.6e+00  4.0e+01
 	v1.10.3    1.4e+00  4.5e+00  4.1e+01
-	v1.10.2    1.5e+00  4.7e+00  4.3e+01
 	v1.9.0     2.6e+00  9.2e+00  8.8e+01
 	v1.8.6     2.4e+00  9.0e+00  8.5e+01
 	v1.7.4     2.2e+00  8.0e+00  7.8e+01
@@ -89,7 +88,6 @@ Numbers have no unit: they are all relative to the time taken by the shortest ta
 	v1.12.2    3.5e+00  1.2e+01  1.1e+02
 	v1.11.2    3.4e+00  1.1e+01  1.1e+02
 	v1.10.3    3.3e+00  1.2e+01  1.1e+02
-	v1.10.2    3.5e+00  1.2e+01  1.2e+02
 	v1.9.0     2.9e+00  8.9e+00  8.3e+01
 	v1.8.6     3.1e+00  9.0e+00  8.2e+01
 	v1.7.4     2.8e+00  8.9e+00  8.2e+01
