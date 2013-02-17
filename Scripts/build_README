@@ -61,13 +61,13 @@ end
 puts <<-MARKDOWN
 # GRMustache benchmarks
 
-You can here compare the performance of all [GRMustache](https://github.com/groue/GRMustache) versions since v1.10.2.
+You can here compare the performance of [GRMustache](https://github.com/groue/GRMustache) versions.
 
-GRMustache has been tested against random templates of various complexities, containing an average of 2, 10, or 100 elements (text, `{{variable}}` tags, or `{{#section}}` tags).
+GRMustache has been tested against random templates containing 2, 10, or 100 elements (text, `{{variable}}` tags, or `{{#section}}` tags).
 
-For each version and complexity, we benchmark two different tasks: parsing, and rendering.
+Parsing and rendering tasks are measured separately.
 
-Those benchmarks are relative, not absolute: numbers have no unit. They are all relative to the time taken by the shortest task, which is given the score 1.
+Numbers have no unit: they are all relative to the time taken by the shortest task, which is given the score 1.
 
 <table border="0" cellspacing="0" cellpadding="0">
 MARKDOWN
