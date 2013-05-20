@@ -1,7 +1,8 @@
 # VERSIONS = v6.2.0 v6.1.4 v6.1.3 v6.1.2 v6.1.1 v6.1.0 v6.0.1 v6.0.0 v5.5.2 v5.5.1 v5.5.0 v5.4.4 v5.4.3 v5.4.2 v5.4.1 v5.4.0 v5.3.0 v5.2.0 v5.1.0 v5.0.1 v5.0.0 v4.3.4 v4.3.3 v4.3.2 v4.3.1 v4.3.0 v4.2.0 v4.1.1 v4.1.0 v4.0.0 v3.0.1 v3.0.0 v2.0.0 v1.13.0 v1.12.2 v1.12.1 v1.12.0 v1.11.2 v1.11.1 v1.11.0 v1.10.3 v1.10.2 v1.10.1 v1.10.0 v1.9.0 v1.8.6 v1.8.5 v1.8.4 v1.8.3 v1.8.2 v1.8.1 v1.8.0 v1.7.4 v1.7.3 v1.7.2 v1.7.1
-VERSIONS = v6.4.0 v6.3.0 v6.2.0 v6.1.4 v6.0.1 v5.5.2 v5.4.4 v5.3.0 v5.2.0 v5.1.0 v5.0.1 v4.3.4 v4.2.0 v4.1.1 v4.0.0 v3.0.1 v2.0.0 v1.13.0 v1.12.2 v1.11.2 v1.10.3 v1.9.0 v1.8.6 v1.7.4
-LATEST = v6.4.0
+VERSIONS = v6.6.0 v6.5.1 v6.4.1 v6.3.0 v6.2.0 v6.1.4 v6.0.1 v5.5.2 v5.4.4 v5.3.0 v5.2.0 v5.1.0 v5.0.1 v4.3.4 v4.2.0 v4.1.1 v4.0.0 v3.0.1 v2.0.0 v1.13.0 v1.12.2 v1.11.2 v1.10.3 v1.9.0 v1.8.6 v1.7.4
+LATEST = v6.6.0
 COMPLEXITIES = 2 10 100
+COUNTS = 5000 1000 100
 TASKS = parse render
 
 all: README.md
@@ -48,7 +49,7 @@ endef
 define VERSION_COMPLEXITY_TASK_template
 Product/samples/$(2)/$(3)/$(1).samples: Product/build/$(1)/Release/GRMustacheBenchmark
 	mkdir -p Product/samples/$(2)/$(3)
-	Scripts/repeat 20 Product/build/$(1)/Release/GRMustacheBenchmark 1000 $(3) $(2) | tee Product/samples/$(2)/$(3)/$(1).samples
+	Scripts/repeat 20 Product/build/$(1)/Release/GRMustacheBenchmark `dc -e "20000 $(2) / p"` $(3) $(2) | tee Product/samples/$(2)/$(3)/$(1).samples
 endef
 
 $(foreach version,$(VERSIONS),$(eval $(call VERSION_SAMPLES_template,$(version))))
