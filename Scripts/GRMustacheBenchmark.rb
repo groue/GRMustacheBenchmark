@@ -92,7 +92,7 @@ class GRMustacheBenchmark
       complexity = File.basename(File.dirname(File.dirname(path)))
       @complexities |= [complexity]
       
-      samples = File.read(path).map { |sample_line| sample_line.strip.to_f }
+      samples = File.read(path).lines.map { |sample_line| sample_line.strip.to_f }
       samples = numbers_in_confidence_interval(samples, 0.75)  # keep 75% of the population
       sample = samples.inject(&:+) / samples.count  # average
       
@@ -103,7 +103,7 @@ class GRMustacheBenchmark
       @sample_for_version_for_complexity_for_task[task][complexity][version] = sample
     end
     
-    @versions = @versions.sort_by { |version| [-version[0], version.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i] }
+    @versions = @versions.sort_by { |version| [-(version[0].ord), version.scan(/\d*/).delete_if(&:empty?).map { |n| '%03d' % (n.to_i) }.join.to_i] }
     
     @complexities = @complexities.sort_by { |complexity| complexity.to_i }
     

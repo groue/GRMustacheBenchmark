@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'fileutils'
-require File.join(File.dirname(__FILE__), 'GRMustacheBenchmark')
+require File.join('.', File.dirname(__FILE__), 'GRMustacheBenchmark')
 
 ROOT = File.join(File.dirname(__FILE__), '..')
 plots_path = File.join(ROOT, 'Plots')
