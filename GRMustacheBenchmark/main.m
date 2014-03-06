@@ -14,14 +14,32 @@
 
 @implementation RandomData
 
++ (NSSet *)validMustacheKeys
+{
+    return [NSSet setWithObject:@"name"];
+}
+
 - (NSString *)description
 {
-    return @"text";
+    return @"data";
 }
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
-    return self;
+    switch (arc4random() % 4) {
+        case 0:
+            return nil;
+            
+        case 1:
+            return self;
+            
+        case 2:
+            return [NSArray arrayWithObjects:self, self, self, nil];
+            
+        case 3:
+            return [NSArray array];
+    }
+    return nil;
 }
 
 @end
@@ -67,13 +85,13 @@
 {
     switch (arc4random() % 3) {
         case 0:
-            return [self randomIdentifier];
+            return @".";
             
         case 1:
-            return [NSString stringWithFormat:@"%@.%@", [self randomIdentifier], [self randomIdentifier]];
+            return [self randomIdentifier];
             
         case 2:
-            return [NSString stringWithFormat:@"%@.%@.%@", [self randomIdentifier], [self randomIdentifier], [self randomIdentifier]];
+            return [NSString stringWithFormat:@"%@.%@", [self randomIdentifier], [self randomIdentifier]];
     }
     return nil;
 }
@@ -100,6 +118,7 @@
     NSString *keyPath = [self randomKeyPath];
     return [NSString stringWithFormat:@"{{#%@}}%@{{/%@}}", keyPath, innerTemplateString, keyPath];
 }
+
 @end
 
 
