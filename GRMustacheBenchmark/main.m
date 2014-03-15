@@ -14,7 +14,7 @@
 
 @implementation RandomData
 
-+ (NSSet *)validMustacheKeys
++ (NSSet *)safeMustacheKeys
 {
     return [NSSet setWithObject:@"name"];
 }
@@ -28,16 +28,10 @@
 {
     switch (arc4random() % 4) {
         case 0:
-            return nil;
+            return [NSArray arrayWithObjects:self, self, nil];
             
-        case 1:
+        default:
             return self;
-            
-        case 2:
-            return [NSArray arrayWithObjects:self, self, self, nil];
-            
-        case 3:
-            return [NSArray array];
     }
     return nil;
 }

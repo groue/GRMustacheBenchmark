@@ -1,8 +1,8 @@
-VERSIONS = v6.9.2 v6.8.4 v6.7.5 v6.6.0 v6.5.1 v6.4.1 v6.3.0 v6.2.0 v6.1.4 v6.0.1 v5.5.2 v5.4.4 v5.3.0 v5.2.0 v5.1.0 v5.0.1 v4.3.4
-# Before v4.3.2, arrays rendering is different.
+VERSIONS = v7.0.0 v6.9.2 v6.8.4 v6.7.5 v6.6.0 v6.5.1 v6.4.1 v6.3.0 v6.2.0 v6.1.4 v6.0.1 v5.5.2 v5.4.4 v5.3.0 v5.2.0 v5.1.0 v5.0.1 v4.3.4
+# Before v4.3.2, array rendering is different.
 # v4.2.0 v4.1.1 v4.0.0
 # v3.0.1 v2.0.0 v1.13.0 v1.12.2 v1.11.2 v1.10.3 v1.9.0 v1.8.6 v1.7.4
-LATEST = v6.9.2
+LATEST = v7.0.0
 COMPLEXITIES = 2 10 100
 COUNTS = 5000 1000 100
 TASKS = parse render
@@ -40,6 +40,7 @@ Product/lib/GRMustache-$(1)/lib/libGRMustache.a: Product/lib/GRMustache-$(1)
 	[ -f Product/lib/GRMustache-$(1)/lib/libGRMustache4-MacOS.a ] && ln -s libGRMustache4-MacOS.a Product/lib/GRMustache-$(1)/lib/libGRMustache.a || true
 	[ -f Product/lib/GRMustache-$(1)/lib/libGRMustache5-MacOS.a ] && ln -s libGRMustache5-MacOS.a Product/lib/GRMustache-$(1)/lib/libGRMustache.a || true
 	[ -f Product/lib/GRMustache-$(1)/lib/libGRMustache6-MacOS.a ] && ln -s libGRMustache6-MacOS.a Product/lib/GRMustache-$(1)/lib/libGRMustache.a || true
+	[ -f Product/lib/GRMustache-$(1)/lib/libGRMustache7-MacOS.a ] && ln -s libGRMustache7-MacOS.a Product/lib/GRMustache-$(1)/lib/libGRMustache.a || true
 clean_version_lib_$(1):
 	rm -rf Product/lib/GRMustache-$(1)
 endef
@@ -70,6 +71,7 @@ Product/lib/GRMustache-LOCAL/lib/libGRMustache.a: Product/lib/GRMustache-LOCAL
 	[ -f Product/lib/GRMustache-LOCAL/lib/libGRMustache4-MacOS.a ] && ln -s libGRMustache4-MacOS.a Product/lib/GRMustache-LOCAL/lib/libGRMustache.a || true
 	[ -f Product/lib/GRMustache-LOCAL/lib/libGRMustache5-MacOS.a ] && ln -s libGRMustache5-MacOS.a Product/lib/GRMustache-LOCAL/lib/libGRMustache.a || true
 	[ -f Product/lib/GRMustache-LOCAL/lib/libGRMustache6-MacOS.a ] && ln -s libGRMustache6-MacOS.a Product/lib/GRMustache-LOCAL/lib/libGRMustache.a || true
+	[ -f Product/lib/GRMustache-LOCAL/lib/libGRMustache7-MacOS.a ] && ln -s libGRMustache7-MacOS.a Product/lib/GRMustache-LOCAL/lib/libGRMustache.a || true
 clean_version_lib_LOCAL: 
 	mkdir -p Product/lib
 	[ -e Product/lib/GRMustache-LOCAL ] || ln -s ../../../GRMustache Product/lib/GRMustache-LOCAL
