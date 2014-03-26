@@ -153,16 +153,18 @@ int main (int argc, char * const argv[])
             // outputs parsing time
             double time = 0;
             for (NSUInteger i=0; i<sampleCount; i++) {
-                NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
-                time += cpu_time_elapsed(^{
-                    @autoreleasepool {
+                @autoreleasepool {
+                    NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
+                    time += cpu_time_elapsed(^{
+                        @autoreleasepool {
 #if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
-                        [GRMustacheTemplate parseString:templateString error:NULL];
+                            [GRMustacheTemplate parseString:templateString error:NULL];
 #else
-                        [GRMustacheTemplate templateFromString:templateString error:NULL];
+                            [GRMustacheTemplate templateFromString:templateString error:NULL];
 #endif
-                    }
-                });
+                        }
+                    });
+                }
             }
             printf("%g\n", time/sampleCount);
             
@@ -172,21 +174,23 @@ int main (int argc, char * const argv[])
             id randomData = [RandomData new];
             double time = 0;
             for (NSUInteger i=0; i<sampleCount; i++) {
-                NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
+                @autoreleasepool {
+                    NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
 #if GRMUSTACHE_MAJOR_VERSION < 2 && GRMUSTACHE_MINOR_VERSION < 11
-                GRMustacheTemplate *template = [GRMustacheTemplate parseString:templateString error:NULL];
+                    GRMustacheTemplate *template = [GRMustacheTemplate parseString:templateString error:NULL];
 #else
-                GRMustacheTemplate *template = [GRMustacheTemplate templateFromString:templateString error:NULL];
+                    GRMustacheTemplate *template = [GRMustacheTemplate templateFromString:templateString error:NULL];
 #endif
-                time += cpu_time_elapsed(^{
-                    @autoreleasepool {
+                    time += cpu_time_elapsed(^{
+                        @autoreleasepool {
 #if GRMUSTACHE_MAJOR_VERSION < 6
-                        [template renderObject:randomData];
+                            [template renderObject:randomData];
 #else
-                        [template renderObject:randomData error:NULL];
+                            [template renderObject:randomData error:NULL];
 #endif
-                    }
-                });
+                        }
+                    });
+                }
             }
             printf("%g\n", time/sampleCount);
             
@@ -196,16 +200,18 @@ int main (int argc, char * const argv[])
             double time = 0;
             id randomData = [RandomData new];
             for (NSUInteger i=0; i<sampleCount; i++) {
-                NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
-                time += cpu_time_elapsed(^{
-                    @autoreleasepool {
+                @autoreleasepool {
+                    NSString *templateString = [producer randomTemplateStringWithComplexity:complexity allowingText:YES];
+                    time += cpu_time_elapsed(^{
+                        @autoreleasepool {
 #if GRMUSTACHE_MAJOR_VERSION < 6
-                    [GRMustacheTemplate renderObject:randomData fromString:templateString error:NULL];
+                            [GRMustacheTemplate renderObject:randomData fromString:templateString error:NULL];
 #else
-                    [[GRMustacheTemplate templateFromString:templateString error:NULL] renderObject:randomData error:NULL];
+                            [[GRMustacheTemplate templateFromString:templateString error:NULL] renderObject:randomData error:NULL];
 #endif
-                    }
-                });
+                        }
+                    });
+                }
             }
             printf("%g\n", time/sampleCount);
             
@@ -220,15 +226,17 @@ int main (int argc, char * const argv[])
             GRMustacheTemplate *template = [GRMustacheTemplate templateFromString:@"{{name}} has {{#items}}{{name}},{{/items}}" error:NULL];
 #endif
             for (NSUInteger i=0; i<sampleCount; i++) {
-                time += cpu_time_elapsed(^{
-                    @autoreleasepool {
+                @autoreleasepool {
+                    time += cpu_time_elapsed(^{
+                        @autoreleasepool {
 #if GRMUSTACHE_MAJOR_VERSION < 6
-                        [template renderObject:data];
+                            [template renderObject:data];
 #else
-                        [template renderObject:data error:NULL];
+                            [template renderObject:data error:NULL];
 #endif
-                    }
-                });
+                        }
+                    });
+                }
             }
             printf("%g\n", time/sampleCount);
             
