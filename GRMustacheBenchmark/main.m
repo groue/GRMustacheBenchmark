@@ -10,21 +10,17 @@
 #include <time.h>
 
 @interface RandomData : NSObject
+@property (nonatomic, readonly) id name;
 @end
 
 @implementation RandomData
-
-+ (NSSet *)safeMustacheKeys
-{
-    return [NSSet setWithObject:@"name"];
-}
 
 - (NSString *)description
 {
     return @"data";
 }
 
-- (id)valueForUndefinedKey:(NSString *)key
+- (id)name
 {
     switch (arc4random() % 4) {
         case 0:
